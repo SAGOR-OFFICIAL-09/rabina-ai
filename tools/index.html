@@ -3,129 +3,208 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0a1628" />
+<meta name="theme-color" content="#050d1a" />
 <title>SAGOR API Tools</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#050d1a; --surface:#0a1628; --surface2:#0d1f38;
-  --border:rgba(0,212,255,.18); --text:#e8f4ff; --muted:#8ba5c8;
-  --acc:#00d4ff; --acc2:#7c3aed;
+  --border:rgba(0,212,255,.16); --text:#e8f4ff; --muted:#8ba5c8;
+  --acc:#00d4ff; --acc2:#7c3aed; --good:#00ff88; --bad:#ff5b5b;
 }
-html,body{height:100%}
+html,body{min-height:100%}
 body{
   font-family:"Hind Siliguri",-apple-system,"Segoe UI",system-ui,sans-serif;
-  background:var(--bg); color:var(--text); min-height:100dvh;
+  background:var(--bg); color:var(--text);
   background-image:
-    radial-gradient(700px 400px at 15% 0%, rgba(124,58,237,.12), transparent 60%),
-    radial-gradient(700px 500px at 90% 20%, rgba(0,212,255,.10), transparent 60%);
+    radial-gradient(800px 420px at 12% -4%, rgba(124,58,237,.14), transparent 60%),
+    radial-gradient(760px 480px at 92% 12%, rgba(0,212,255,.10), transparent 60%),
+    radial-gradient(900px 600px at 50% 110%, rgba(0,255,136,.05), transparent 60%);
   background-attachment:fixed;
 }
+/* header */
 .topbar{
-  position:sticky;top:0;z-index:10;
-  display:flex;align-items:center;gap:12px;
-  padding:14px 18px;
-  background:rgba(5,13,26,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:12px;padding:13px 18px;
+  background:rgba(5,13,26,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
 .back{
   border:1px solid var(--border);background:var(--surface);color:var(--text);
-  width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:17px;
-  display:flex;align-items:center;justify-content:center;text-decoration:none;
-  transition:transform .18s,box-shadow .18s;
+  min-width:40px;height:40px;border-radius:13px;cursor:pointer;font-size:18px;
+  display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
 }
-.back:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,212,255,.25)}
-.brand{font-weight:700;font-size:17px}
+.back:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:0 8px 20px rgba(0,212,255,.25)}
+.brand{font-weight:700;font-size:17px;line-height:1.25}
 .brand small{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
-.wrap{max-width:920px;margin:0 auto;padding:22px 16px 60px}
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px 70px}
+/* hero */
+.hero{text-align:center;padding:26px 10px 20px}
+.hero h1{
+  font-size:clamp(26px,6vw,38px);font-weight:700;letter-spacing:.3px;
+  background:linear-gradient(120deg,#e8f4ff,#00d4ff 55%,#7c3aed);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 18px rgba(0,212,255,.25));
+}
+.hero p{color:var(--muted);margin-top:8px;font-size:14px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;
+  background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.35);color:var(--good);
+}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 10px var(--good);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+/* search */
 .search{
-  width:100%;padding:13px 16px;border-radius:14px;margin-bottom:18px;
+  width:100%;padding:14px 18px;border-radius:16px;margin:20px 0 8px;
   background:var(--surface);border:1px solid var(--border);color:var(--text);
   font:inherit;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;
 }
-.search:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,212,255,.15)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.card{
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:18px 12px;text-align:center;cursor:pointer;
+.search:focus{border-color:var(--acc);box-shadow:0 0 0 4px rgba(0,212,255,.14)}
+.sect{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin:22px 4px 12px}
+/* featured tool */
+.feat{
+  display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--text);
+  background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(124,58,237,.12));
+  border:1px solid var(--border);border-radius:20px;padding:18px;
   transition:transform .2s,box-shadow .2s,border-color .2s;
-  text-decoration:none;color:var(--text);display:block;
 }
-.card:hover{transform:translateY(-4px);border-color:var(--acc);box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 22px rgba(0,212,255,.12)}
-.card .ic{font-size:34px;display:block;margin-bottom:10px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
-.card .nm{font-weight:700;font-size:14px}
-.card .ds{font-size:11.5px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 16px 40px rgba(0,0,0,.45),0 0 26px rgba(0,212,255,.15)}
+.feat .fic{font-size:42px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+.feat b{font-size:16.5px;display:block}
+.feat span{font-size:13px;color:var(--muted);display:block;margin-top:3px}
+.feat .go{margin-left:auto;font-size:22px;opacity:.6}
+/* api grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:13px}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:20px 12px 16px;text-align:center;cursor:pointer;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  text-decoration:none;color:var(--text);display:block;position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .25s;
+  background:radial-gradient(220px 120px at 50% 0%, var(--glow,rgba(0,212,255,.14)), transparent 70%);
+}
+.card:hover{transform:translateY(-5px);border-color:var(--acc);box-shadow:0 16px 38px rgba(0,0,0,.45)}
+.card:hover::before{opacity:1}
+.tile{
+  width:58px;height:58px;margin:0 auto 12px;border-radius:17px;
+  display:flex;align-items:center;justify-content:center;font-size:29px;
+  background:var(--tile,rgba(0,212,255,.12));border:1px solid var(--border);
+  box-shadow:0 8px 20px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
+  position:relative;
+}
+.card .nm{font-weight:700;font-size:14.5px;position:relative}
+.card .ep{font-family:ui-monospace,monospace;font-size:10.5px;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
 /* tool page */
-.toolhead{display:flex;align-items:center;gap:14px;margin-bottom:6px}
-.toolhead .ic{font-size:44px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
-.toolhead h1{font-size:22px}
-.toolhead p{color:var(--muted);font-size:13px;margin-top:2px}
+.toolhero{
+  display:flex;align-items:center;gap:16px;padding:20px;border-radius:22px;margin-bottom:6px;
+  background:linear-gradient(135deg,var(--surface),var(--surface2));
+  border:1px solid var(--border);position:relative;overflow:hidden;
+}
+.toolhero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(400px 160px at 15% 0%, var(--glow,rgba(0,212,255,.14)), transparent 70%);
+}
+.toolhero .hic{font-size:52px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));position:relative}
+.toolhero h1{font-size:23px;position:relative}
+.toolhero p{color:var(--muted);font-size:13px;margin-top:3px;position:relative}
 .endpoint{
-  display:inline-block;margin:10px 0 18px;padding:6px 12px;border-radius:8px;
-  background:var(--surface2);border:1px solid var(--border);
+  display:inline-block;margin:14px 0 18px;padding:8px 14px;border-radius:10px;
+  background:#04090f;border:1px solid var(--border);
   font-family:ui-monospace,monospace;font-size:12.5px;color:var(--acc);
 }
-.form{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
-.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.form{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px}
+.field label b{color:var(--text)}
 .field input,.field textarea{
-  width:100%;padding:12px 14px;border-radius:12px;font:inherit;font-size:14.5px;
+  width:100%;padding:13px 15px;border-radius:13px;font:inherit;font-size:14.5px;
   background:var(--surface2);border:1px solid var(--border);color:var(--text);outline:none;
   transition:border-color .2s,box-shadow .2s;
 }
-.field input:focus,.field textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,212,255,.14)}
+.field input:focus,.field textarea:focus{border-color:var(--acc);box-shadow:0 0 0 4px rgba(0,212,255,.13)}
 .run{
-  padding:13px;border:none;border-radius:12px;cursor:pointer;
+  padding:15px;border:none;border-radius:14px;cursor:pointer;
   background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04121e;
-  font:inherit;font-weight:700;font-size:15.5px;
+  font:inherit;font-weight:700;font-size:16px;letter-spacing:.3px;
   transition:transform .18s,box-shadow .18s,filter .18s;
+  box-shadow:0 10px 28px rgba(0,212,255,.28);
 }
-.run:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,212,255,.35);filter:brightness(1.05)}
-.run:disabled{opacity:.55;cursor:wait}
-#result{display:flex;flex-direction:column;gap:12px}
-.rcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;animation:rise .25s ease}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.rcard.err{border-color:rgba(255,80,80,.5)}
-.rcard.err .msg{color:#ff8a8a;font-size:14.5px}
-.rimg{max-width:100%;border-radius:12px;display:block;margin:0 auto;max-height:380px}
-.rvid{width:100%;border-radius:12px;max-height:420px;background:#000}
-.raud{width:100%;margin-top:6px}
-.dlrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.run:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 34px rgba(0,212,255,.4);filter:brightness(1.06)}
+.run:disabled{opacity:.55;cursor:wait;transform:none}
+#result{display:flex;flex-direction:column;gap:13px}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;animation:rise .28s ease}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.rcard.err{border-color:rgba(255,91,91,.55);background:rgba(255,91,91,.06)}
+.rcard.err .msg{color:#ff9a9a;font-size:15px}
+.rimg{max-width:100%;border-radius:14px;display:block;margin:0 auto;max-height:400px;box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.rvid{width:100%;border-radius:14px;max-height:440px;background:#000}
+.raud{width:100%;margin-top:8px}
+.dlrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
 .dl{
-  display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:10px;
-  background:rgba(0,212,255,.12);border:1px solid var(--border);color:var(--acc);
-  text-decoration:none;font-size:13.5px;font-weight:600;transition:transform .18s,box-shadow .18s;
+  display:inline-flex;align-items:center;gap:7px;padding:10px 17px;border-radius:11px;
+  background:rgba(0,212,255,.1);border:1px solid var(--border);color:var(--acc);
+  text-decoration:none;font-size:13.5px;font-weight:700;transition:transform .18s,box-shadow .18s,border-color .18s;
 }
-.dl:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,212,255,.2)}
-.rtext{font-size:14.5px;line-height:1.7;white-space:pre-wrap}
+.dl:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:0 10px 22px rgba(0,212,255,.22)}
+.rtext{font-size:15px;line-height:1.75;white-space:pre-wrap}
 .rjson{
-  background:#04090f;border:1px solid var(--border);border-radius:12px;padding:12px;
-  font-family:ui-monospace,monospace;font-size:12px;max-height:320px;overflow:auto;
+  background:#04090f;border:1px solid var(--border);border-radius:13px;padding:13px;
+  font-family:ui-monospace,monospace;font-size:12px;max-height:340px;overflow:auto;
   white-space:pre-wrap;word-break:break-all;color:#9fd8ef;
 }
-.rlabel{font-size:12px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
-.loading{text-align:center;padding:34px;color:var(--muted);font-size:15px}
-.loading .spin{font-size:30px;display:inline-block;animation:spin 1.2s linear infinite}
+.rlabel{font-size:11.5px;color:var(--muted);margin-bottom:9px;text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+.fact{margin:6px 0;font-size:14.5px}
+.fact span{color:var(--muted)}
+.loading{text-align:center;padding:44px;color:var(--muted);font-size:15px}
+.loading .spin{font-size:34px;display:inline-block;animation:spin 1.1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty{text-align:center;padding:50px 20px;color:var(--muted)}
-.count{font-size:13px;color:var(--muted);margin-bottom:12px}
-.foot{text-align:center;padding:26px;color:var(--muted);font-size:12.5px}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty a{color:var(--acc)}
+/* uploader */
+.upzone{
+  border:2px dashed var(--border);border-radius:18px;padding:38px 14px;text-align:center;cursor:pointer;
+  font-size:15px;transition:border-color .2s,background .2s,transform .2s;
+}
+.upzone:hover{border-color:var(--acc);background:rgba(0,212,255,.06);transform:translateY(-2px)}
+.upzone .big{font-size:44px;display:block;margin-bottom:10px}
+.upprog{text-align:center;padding:20px;color:var(--muted);font-size:14.5px}
+.upprog .spin{font-size:30px;display:inline-block;animation:spin 1.1s linear infinite}
+.upres{display:flex;flex-direction:column;gap:12px}
+.upres img{max-width:100%;border-radius:14px;max-height:260px;object-fit:contain;background:var(--surface2)}
+.urlrow{display:flex;gap:9px}
+.urlrow input{flex:1;min-width:0;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-size:12.5px;font-family:ui-monospace,monospace}
+.abtn{padding:12px 18px;border-radius:12px;border:1px solid var(--border);background:rgba(0,212,255,.12);color:var(--acc);font-weight:700;cursor:pointer;font:inherit;font-size:14px;transition:transform .18s,box-shadow .18s}
+.abtn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,212,255,.2)}
+.upkey{display:flex;flex-direction:column;gap:10px;font-size:13.5px;background:rgba(255,200,60,.06);border:1px solid rgba(255,200,60,.3);border-radius:14px;padding:16px}
+.upkey input{background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:12px 14px;color:var(--text);font:inherit;font-size:14px}
+.hostok{font-size:12.5px;color:var(--good)}
+.foot{text-align:center;padding:30px;color:var(--muted);font-size:12.5px}
 .foot a{color:var(--acc);text-decoration:none}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <a class="back" id="backBtn" href="./">←</a>
+  <a class="back" id="backBtn" href="/">←</a>
   <div class="brand">🌐 SAGOR API Tools<small id="subTitle">সব API এক জায়গায়</small></div>
 </header>
 <main class="wrap" id="app"><div class="loading"><span class="spin">⏳</span><br>লোড হচ্ছে...</div></main>
-<footer class="foot">Powered by <a href="https://sagor-apis-nx.vercel.app">sagor-apis-nx</a> · Made for <a href="/">রাবিনা AI</a></footer>
+<footer class="foot">Powered by <a href="https://sagor-apis-nx.vercel.app">sagor-apis-nx</a> · <a href="/">রাবিনা AI</a></footer>
 <script>
 var API_BASE = "https://sagor-apis-nx.vercel.app";
 var META = null;
+var IMGUR_CLIENT_ID = "";
 
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function qs(){ var o = {}; location.search.slice(1).split("&").forEach(function(p){ var kv = p.split("="); if(kv[0]) o[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || ""); }); return o; }
-
+function hexA(hex, a){
+  var h = hex.replace("#", "");
+  if(h.length === 3) h = h.split("").map(function(c){ return c + c; }).join("");
+  var n = parseInt(h, 16);
+  return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
+}
 async function loadMeta(){
   var r = await fetch(API_BASE + "/sagor/meta?key=sagor");
   if(!r.ok) throw new Error("meta");
@@ -134,23 +213,28 @@ async function loadMeta(){
   return j.apis;
 }
 
-/* ---------- hub ---------- */
+/* ================= HUB ================= */
 function renderHub(){
   document.getElementById("backBtn").href = "/";
   document.getElementById("subTitle").textContent = "সব API এক জায়গায়";
   var keys = Object.keys(META).sort();
-  var h = '<input class="search" id="q" placeholder="🔍 API খোঁজো..." />';
-  h += '<div class="count">' + keys.length + 'টা API running 🟢</div>';
-  h += '<div class="grid" id="grid"></div>';
+  var h = '<div class="hero"><h1>SAGOR API Tools</h1><p>তোমার সব API-র ওয়েবসাইট — লাইভ টেস্ট করো</p>' +
+    '<span class="pill"><span class="dot"></span>' + keys.length + 'টা API running</span></div>';
+  h += '<input class="search" id="q" placeholder="🔍 API খোঁজো..." />';
+  h += '<div class="sect">⭐ Featured</div>';
+  h += '<a class="feat" href="?tool=imglink"><span class="fic">🖼️</span><div><b>ছবির লিংক</b><span>ছবি/ফাইল আপলোড করে শেয়ার লিংক নাও</span></div><span class="go">→</span></a>';
+  h += '<div class="sect">🔌 সব API</div><div class="grid" id="grid"></div>';
   document.getElementById("app").innerHTML = h;
   function draw(f){
     var g = document.getElementById("grid"); g.innerHTML = "";
     keys.filter(function(k){ return !f || (META[k].title + " " + k).toLowerCase().indexOf(f.toLowerCase()) >= 0; })
       .forEach(function(k){
-        var a = META[k];
+        var a = META[k], col = a.color || "#00d4ff";
         var el = document.createElement("a");
         el.className = "card"; el.href = "?api=" + encodeURIComponent(k);
-        el.innerHTML = '<span class="ic">' + esc(a.icon || "🔌") + '</span><div class="nm">' + esc(a.title || k) + '</div><div class="ds">' + esc(a.endpoint || "") + '</div>';
+        el.style.setProperty("--glow", hexA(col, .16));
+        el.innerHTML = '<div class="tile" style="--tile:' + hexA(col, .13) + '">' + esc(a.icon || "🔌") + '</div>' +
+          '<div class="nm">' + esc(a.title || k) + '</div><div class="ep">' + esc(a.endpoint || "") + '</div>';
         g.appendChild(el);
       });
   }
@@ -158,36 +242,118 @@ function renderHub(){
   document.getElementById("q").addEventListener("input", function(e){ draw(e.target.value); });
 }
 
-/* ---------- tool page ---------- */
-function autoVal(name){
-  if(name === "key" || name === "apikey") return "sagor";
-  return null;
+/* ================= IMAGE LINK TOOL ================= */
+async function uploadToCatbox(file){
+  var fd = new FormData();
+  fd.append("reqtype", "fileupload");
+  fd.append("fileToUpload", file);
+  var r = await fetch("https://catbox.moe/user/api.php", { method:"POST", body:fd });
+  if(!r.ok) throw new Error("catbox");
+  var url = (await r.text()).trim();
+  if(url.indexOf("http") !== 0) throw new Error("catbox");
+  return url;
 }
+async function uploadToImgur(file, cid){
+  var fd = new FormData(); fd.append("image", file);
+  var r = await fetch("https://api.imgur.com/3/image", { method:"POST", headers:{ "Authorization":"Client-ID " + cid }, body:fd });
+  var j = await r.json();
+  if(!j || !j.success || !j.data || !j.data.link) throw new Error("imgur");
+  return j.data.link;
+}
+function imgurKey(){ return (IMGUR_CLIENT_ID || "").trim() || (function(){ try{ return localStorage.getItem("imgur_cid") || ""; }catch(e){ return ""; } })().trim(); }
+async function hostFile(file){
+  try{ return { url: await uploadToCatbox(file), host:"Catbox" }; }catch(e){}
+  var cid = imgurKey();
+  if(cid){ try{ return { url: await uploadToImgur(file, cid), host:"Imgur" }; }catch(e2){} }
+  var err = new Error("needKey"); err.needKey = !cid; throw err;
+}
+function renderImgLink(){
+  document.getElementById("backBtn").href = "./";
+  document.getElementById("subTitle").textContent = "ছবি → শেয়ার লিংক";
+  var body = document.getElementById("app");
+  body.innerHTML =
+    '<div class="toolhero"><span class="hic">🖼️</span><div><h1>ছবির লিংক</h1><p>ছবি/ফাইল আপলোড করে শেয়ার করার মতো লিংক নাও</p></div></div>' +
+    '<div class="form"><div class="upzone" id="upZone"><span class="big">📁</span>ছবি / ফাইল বেছে নাও<input type="file" id="upFile" hidden /></div>' +
+    '<div class="upprog" id="upProg" hidden><span class="spin">⏳</span><br>আপলোড হচ্ছে...</div>' +
+    '<div class="upres" id="upRes" hidden>' +
+      '<img id="upImg" alt="" />' +
+      '<div class="urlrow"><input id="upUrl" readonly /><button class="abtn" id="upCopy">📋 কপি</button></div>' +
+      '<div class="hostok" id="upHost"></div>' +
+    '</div>' +
+    '<div class="upkey" id="upKey" hidden>' +
+      '<div>🔑 ফ্রি আপলোড কাজ করেনি। Imgur Client-ID দাও (একবার দিলেই মনে রাখবে):</div>' +
+      '<input id="upKeyIn" placeholder="Imgur Client-ID" />' +
+      '<button class="abtn" id="upKeySave">সেভ করো</button>' +
+    '</div></div>';
+  var zone = document.getElementById("upZone"), fi = document.getElementById("upFile");
+  var prog = document.getElementById("upProg"), res = document.getElementById("upRes"), key = document.getElementById("upKey");
+  var lastFile = null;
+  zone.addEventListener("click", function(){ fi.click(); });
+  async function go(file){
+    if(!file) return;
+    lastFile = file;
+    prog.hidden = false; res.hidden = true; key.hidden = true;
+    try{
+      var out = await hostFile(file);
+      prog.hidden = true; res.hidden = false;
+      var im = document.getElementById("upImg");
+      if(file.type.indexOf("image/") === 0){ im.src = out.url; im.style.display = ""; }
+      else im.style.display = "none";
+      document.getElementById("upUrl").value = out.url;
+      document.getElementById("upHost").textContent = "✅ " + out.host + " দিয়ে আপলোড হয়েছে";
+      document.getElementById("upCopy").onclick = function(){
+        if(navigator.clipboard) navigator.clipboard.writeText(out.url).catch(function(){});
+        toast("📋 লিংক কপি হয়েছে!");
+      };
+    }catch(e){
+      prog.hidden = true;
+      if(e && e.needKey) key.hidden = false;
+      else toast("❌ আপলোড ব্যর্থ — আবার চেষ্টা করো");
+    }
+  }
+  fi.addEventListener("change", function(){ go(fi.files && fi.files[0]); fi.value = ""; });
+  document.getElementById("upKeySave").addEventListener("click", function(){
+    var v = document.getElementById("upKeyIn").value.trim();
+    if(!v){ toast("Client-ID লেখো"); return; }
+    try{ localStorage.setItem("imgur_cid", v); }catch(e){}
+    toast("✅ সেভ হয়েছে!");
+    if(lastFile) go(lastFile);
+  });
+}
+function toast(msg){
+  var t = document.createElement("div");
+  t.textContent = msg;
+  t.style.cssText = "position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#0d1f38;border:1px solid rgba(0,212,255,.4);color:#e8f4ff;padding:12px 20px;border-radius:14px;z-index:99;font-size:14px;box-shadow:0 12px 32px rgba(0,0,0,.5)";
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2600);
+}
+
+/* ================= API TOOL PAGE ================= */
+function autoVal(name){ return (name === "key" || name === "apikey") ? "sagor" : null; }
 function renderTool(key){
   var a = META[key];
-  if(!a){ document.getElementById("app").innerHTML = '<div class="empty">❌ API পাওয়া যায়নি<br><br><a href="./" style="color:var(--acc)">← সব API</a></div>'; return; }
+  if(!a){ document.getElementById("app").innerHTML = '<div class="empty">❌ API পাওয়া যায়নি<br><br><a href="./">← সব API</a></div>'; return; }
   document.getElementById("backBtn").href = "./";
   document.getElementById("subTitle").textContent = a.endpoint || "";
-  var h = '<div class="toolhead"><span class="ic">' + esc(a.icon || "🔌") + '</span><div><h1>' + esc(a.title || key) + '</h1><p>' + esc(a.desc || "") + '</p></div></div>';
+  var col = a.color || "#00d4ff";
+  var h = '<div class="toolhero" style="--glow:' + hexA(col, .16) + '"><span class="hic">' + esc(a.icon || "🔌") + '</span><div><h1>' + esc(a.title || key) + '</h1><p>' + esc(a.desc || "লাইভ API টেস্ট") + '</p></div></div>';
   h += '<span class="endpoint">GET ' + esc(API_BASE + (a.endpoint || "")) + '</span>';
   h += '<div class="form" id="form">';
   (a.params || []).forEach(function(p){
-    var av = autoVal(p.name);
-    if(av !== null) return; // auto-filled
+    if(autoVal(p.name) !== null) return;
     var ph = p.placeholder || ("Enter " + p.name + "...");
-    var long = /text|prompt|q$/.test(p.name) && p.name.length <= 6;
-    h += '<div class="field"><label>' + esc(p.name) + (p.required ? " *" : "") + '</label>' +
+    var long = p.name.length <= 6 && /^(text|prompt|q|query)$/.test(p.name);
+    h += '<div class="field"><label><b>' + esc(p.name) + '</b>' + (p.required ? " *" : "") + '</label>' +
       (long
         ? '<textarea data-p="' + esc(p.name) + '" rows="3" placeholder="' + esc(ph) + '"></textarea>'
         : '<input data-p="' + esc(p.name) + '" placeholder="' + esc(ph) + '" />') +
       '</div>';
   });
-  h += '<button class="run" id="runBtn">▶ চালাও</button></div>';
+  h += '<button class="run" id="runBtn">▶ লাইভ চেক করো</button></div>';
   h += '<div id="result"></div>';
   document.getElementById("app").innerHTML = h;
   document.getElementById("runBtn").addEventListener("click", function(){ runTool(key, a); });
 }
-
 async function runTool(key, a){
   var btn = document.getElementById("runBtn"), box = document.getElementById("result");
   var params = [];
@@ -207,11 +373,11 @@ async function runTool(key, a){
     var txt = await r.text(), j = null;
     try{ j = JSON.parse(txt); }catch(e){}
     box.innerHTML = "";
-    box.appendChild(renderResult(j !== null ? j : txt, url));
+    box.appendChild(renderResult(j !== null ? j : txt));
   }catch(e){
     box.innerHTML = '<div class="rcard err"><div class="msg">❌ ব্যর্থ: ' + esc(e.message) + '</div></div>';
   }
-  btn.disabled = false; btn.textContent = "▶ চালাও";
+  btn.disabled = false; btn.textContent = "▶ লাইভ চেক করো";
 }
 
 /* ---------- smart result renderer ---------- */
@@ -230,7 +396,7 @@ function kindOf(u){
   return "link";
 }
 function fname(u){ try{ var p = u.split("?")[0].split("/"); return decodeURIComponent(p[p.length - 1] || "file"); }catch(e){ return "file"; } }
-function renderResult(data, url){
+function renderResult(data){
   var wrap = document.createElement("div");
   function card(html, isErr){
     var d = document.createElement("div");
@@ -243,17 +409,15 @@ function renderResult(data, url){
     card('<div class="msg">❌ ' + esc(data.message || "API error") + '</div>', true);
     return wrap;
   }
-  var obj = (data && typeof data === "object") ? data : null;
-  var payload = obj ? (obj.data !== undefined ? obj.data : obj) : null;
-  // text-ish answers (ai/gpt/deepai)
+  var payload = (data && typeof data === "object" && data.data !== undefined) ? data.data : data;
   if(payload && typeof payload === "object" && typeof payload.reply === "string" && Object.keys(payload).length <= 3){
     card('<div class="rtext">' + esc(payload.reply) + '</div>');
-  } else if(typeof payload === "string"){
+  } else if(typeof payload === "string" && payload){
     card('<div class="rtext">' + esc(payload) + '</div>');
   }
-  // media + links
   var urls = [];
-  if(payload) findUrls(payload, urls);
+  if(payload && typeof payload !== "string") findUrls(payload, urls);
+  else if(typeof payload === "string") findUrls(payload, urls);
   urls = urls.filter(function(u, i){ return urls.indexOf(u) === i; }).slice(0, 12);
   var mediaH = "", linkH = "";
   urls.forEach(function(u){
@@ -261,29 +425,27 @@ function renderResult(data, url){
     if(k === "img") mediaH += '<img class="rimg" loading="lazy" src="' + esc(u) + '" alt="" /><div class="dlrow"><a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🖼️ দেখো</a><a class="dl" href="' + esc(u) + '" download>⬇️ ডাউনলোড</a></div>';
     else if(k === "vid") mediaH += '<video class="rvid" controls preload="metadata" src="' + esc(u) + '"></video><div class="dlrow"><a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🎬 দেখো</a><a class="dl" href="' + esc(u) + '" download>⬇️ ডাউনলোড</a></div>';
     else if(k === "aud") mediaH += '<audio class="raud" controls preload="metadata" src="' + esc(u) + '"></audio><div class="dlrow"><a class="dl" href="' + esc(u) + '" download>⬇️ ডাউনলোড</a></div>';
-    else linkH += '<a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🔗 ' + esc(fname(u)).slice(0, 34) + '</a>';
+    else linkH += '<a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🔗 ' + esc(fname(u)).slice(0, 32) + '</a>';
   });
   if(mediaH) card(mediaH);
   if(linkH) card('<div class="rlabel">লিংক</div><div class="dlrow">' + linkH + '</div>');
-  // key facts (non-url, non-huge fields)
   if(payload && typeof payload === "object" && !Array.isArray(payload)){
     var facts = "";
     Object.keys(payload).forEach(function(k){
       var v = payload[k];
       if(v == null || typeof v === "object") return;
       var s = String(v);
-      if(/^https?:\/\//.test(s) || s.length > 300) return;
-      facts += '<div style="margin:5px 0;font-size:14px"><span style="color:var(--muted)">' + esc(k) + ':</span> <b>' + esc(s) + '</b></div>';
+      if(/^https?:\/\//.test(s) || s.length > 280) return;
+      facts += '<div class="fact"><span>' + esc(k) + ':</span> <b>' + esc(s) + '</b></div>';
     });
     if(facts && !mediaH) card(facts);
   }
-  // raw
   var raw = document.createElement("div");
   raw.className = "rcard";
+  raw.innerHTML = '<div class="rlabel">Raw response</div>';
   var pre = document.createElement("pre");
   pre.className = "rjson";
   pre.textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
-  raw.innerHTML = '<div class="rlabel">Raw response</div>';
   raw.appendChild(pre);
   wrap.appendChild(raw);
   return wrap;
@@ -294,7 +456,8 @@ function renderResult(data, url){
   try{
     META = await loadMeta();
     var q = qs();
-    if(q.api) renderTool(q.api);
+    if(q.tool === "imglink") renderImgLink();
+    else if(q.api) renderTool(q.api);
     else renderHub();
   }catch(e){
     document.getElementById("app").innerHTML = '<div class="empty">❌ API list লোড হয়নি<br><span style="font-size:13px">ইন্টারনেট চেক করে আবার চেষ্টা করো</span></div>';
