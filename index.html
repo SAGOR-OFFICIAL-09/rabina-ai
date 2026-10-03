@@ -339,6 +339,29 @@ html[data-theme="light"] .topbar{ box-shadow:0 8px 26px rgba(43,18,36,.08); }
 .themecard.active{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
 .themecard .swatch{height:46px;border-radius:10px;margin-bottom:8px}
 .themecard .tnm{font-size:13px;font-weight:700}
+/* tools */
+.sidesec{padding:10px 16px 6px;font-size:12.5px;font-weight:700;opacity:.65;letter-spacing:.3px}
+.toolchips{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 4px}
+.toolchip{display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);font-size:13px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;color:var(--text)}
+.toolchip:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:0 6px 16px rgba(var(--glowc),.2)}
+.toolhint{padding:2px 16px 10px;font-size:11px;opacity:.5}
+.toolbody{padding:6px 2px 10px;display:flex;flex-direction:column;gap:12px}
+.upzone{border:2px dashed var(--border);border-radius:14px;padding:26px 12px;text-align:center;cursor:pointer;font-size:14px;transition:border-color .2s ease,background .2s ease}
+.upzone:hover{border-color:var(--acc);background:var(--acc-soft)}
+.upprog{font-size:13.5px;opacity:.8;text-align:center;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.4}}
+.upres{display:flex;flex-direction:column;gap:10px}
+.upres img{max-width:100%;border-radius:12px;max-height:220px;object-fit:contain;background:var(--surface2)}
+.urlrow{display:flex;gap:8px}
+.urlrow input{flex:1;min-width:0;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:12.5px}
+.abtn{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--acc-soft);color:var(--acc);font-weight:700;cursor:pointer;font-size:13.5px;transition:filter .18s ease,transform .18s ease}
+.abtn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.upkey{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.upkey input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:13px}
+.apifield{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.apifield label{opacity:.75;font-size:12.5px}
+.apifield input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:13.5px}
+.apires{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:12.5px;max-height:300px;overflow:auto;white-space:pre-wrap;word-break:break-all}
 </style>
 </head>
 <body data-mode="ai">
@@ -366,9 +389,17 @@ html[data-theme="light"] .topbar{ box-shadow:0 8px 26px rgba(43,18,36,.08); }
 <aside class="sidebar" id="sidebar" aria-label="চ্যাট হিস্ট্রি">
   <div class="sidehead"><span>💬 চ্যাট হিস্ট্রি</span><button class="iconbtn" id="sideClose" aria-label="বন্ধ করো">✕</button></div>
   <button class="newchat" id="sideNewChatBtn">＋ নতুন চ্যাট</button>
+  <div class="sidesec">🛠️ টুলস</div>
+  <div class="toolchips" id="toolChips"></div>
+  <div class="toolhint">＋ নতুন টুল/API add করতে আমাকে বলো</div>
   <div class="chatlist" id="chatList"></div>
   <div class="sidefoot">📱 শুধু এই ফোনে/ব্রাউজারে সেভ থাকে</div>
 </aside>
+<div class="sheetback" id="toolBack" hidden></div>
+<div class="sheet" id="toolSheet" hidden>
+  <div class="sheethead"><span id="toolTitle">🛠️ টুলস</span><button class="iconbtn" id="toolClose" aria-label="বন্ধ করো">✕</button></div>
+  <div class="toolbody" id="toolBody"></div>
+</div>
 <div class="sheetback" id="themeBack" hidden></div>
 <div class="sheet" id="themeSheet" hidden>
   <div class="sheethead"><span>🎨 থিম বেছে নাও</span><button class="iconbtn" id="themeClose" aria-label="বন্ধ করো">✕</button></div>
@@ -1209,6 +1240,143 @@ document.getElementById("igClose").addEventListener("click", function(){
 });
 window.addEventListener("appinstalled", function(){ installBtn.hidden = true; toast("🎉 রাবিনা AI ইন্সটল হয়েছে!"); });
 
+/* ---------------- tools ---------------- */
+var IMGUR_CLIENT_ID = ""; // ← Imgur Client-ID paste spot (optional; Catbox keyless first)
+var TOOLS = [
+  { id:"imglink", icon:"🖼️", name:"ছবির লিংক", kind:"custom", desc:"ছবি/ফাইল আপলোড করে শেয়ার লিংক নাও" },
+  // API tools: { id, icon, name, kind:"api", desc, base, params:[{k,label,ph}] }
+];
+function renderToolChips(){
+  var w = document.getElementById("toolChips"); if(!w) return; w.innerHTML = "";
+  TOOLS.forEach(function(tl){
+    var b = document.createElement("button");
+    b.className = "toolchip"; b.textContent = tl.icon + " " + tl.name;
+    b.title = tl.desc || tl.name;
+    b.addEventListener("click", function(){ openTool(tl.id); });
+    w.appendChild(b);
+  });
+}
+function openToolSheet(title){
+  document.getElementById("toolTitle").textContent = title;
+  document.getElementById("toolBody").innerHTML = "";
+  document.getElementById("toolSheet").hidden = false;
+  document.getElementById("toolBack").hidden = false;
+  closeSidebar();
+}
+function closeToolSheet(){
+  document.getElementById("toolSheet").hidden = true;
+  document.getElementById("toolBack").hidden = true;
+}
+document.getElementById("toolClose").addEventListener("click", closeToolSheet);
+document.getElementById("toolBack").addEventListener("click", closeToolSheet);
+function openTool(id){
+  var tl = TOOLS.find(function(x){ return x.id === id; }); if(!tl) return;
+  if(tl.kind === "api") return renderApiTool(tl);
+  if(tl.id === "imglink") return renderImgLinkTool(tl);
+}
+/* ---- image link uploader (Catbox keyless -> Imgur) ---- */
+async function uploadToCatbox(file){
+  var fd = new FormData();
+  fd.append("reqtype", "fileupload");
+  fd.append("fileToUpload", file);
+  var r = await fetch("https://catbox.moe/user/api.php", { method:"POST", body:fd });
+  if(!r.ok) throw new Error("catbox");
+  var url = (await r.text()).trim();
+  if(url.indexOf("http") !== 0) throw new Error("catbox");
+  return url;
+}
+async function uploadToImgur(file, cid){
+  var fd = new FormData(); fd.append("image", file);
+  var r = await fetch("https://api.imgur.com/3/image", { method:"POST", headers:{ "Authorization":"Client-ID " + cid }, body:fd });
+  var j = await r.json();
+  if(!j || !j.success || !j.data || !j.data.link) throw new Error("imgur");
+  return j.data.link;
+}
+function imgurKey(){ return (IMGUR_CLIENT_ID || "").trim() || (function(){ try{ return localStorage.getItem("imgur_cid") || ""; }catch(e){ return ""; } })().trim(); }
+async function hostFile(file){
+  try{ return { url: await uploadToCatbox(file), host:"Catbox" }; }catch(e){}
+  var cid = imgurKey();
+  if(cid){ try{ return { url: await uploadToImgur(file, cid), host:"Imgur" }; }catch(e2){} }
+  var err = new Error("needKey"); err.needKey = !cid; throw err;
+}
+function renderImgLinkTool(tl){
+  openToolSheet(tl.icon + " " + tl.name);
+  var body = document.getElementById("toolBody");
+  body.innerHTML =
+    '<div class="upzone" id="upZone">📁 ছবি / ফাইল বেছে নাও<input type="file" id="upFile" hidden /></div>' +
+    '<div class="upprog" id="upProg" hidden>⬆️ আপলোড হচ্ছে...</div>' +
+    '<div class="upres" id="upRes" hidden>' +
+      '<img id="upImg" alt="আপলোড" />' +
+      '<div class="urlrow"><input id="upUrl" readonly /><button class="abtn" id="upCopy">📋</button></div>' +
+      '<div style="font-size:12px;opacity:.6" id="upHost"></div>' +
+    '</div>' +
+    '<div class="upkey" id="upKey" hidden>' +
+      '<div>🔑 ফ্রি আপলোড কাজ করেনি। Imgur Client-ID দাও (একবার দিলেই মনে রাখবে):</div>' +
+      '<input id="upKeyIn" placeholder="Imgur Client-ID" />' +
+      '<button class="abtn" id="upKeySave">সেভ করো</button>' +
+    '</div>';
+  var zone = document.getElementById("upZone"), fi = document.getElementById("upFile");
+  var prog = document.getElementById("upProg"), res = document.getElementById("upRes"), key = document.getElementById("upKey");
+  var lastFile = null;
+  zone.addEventListener("click", function(){ fi.click(); });
+  async function go(file){
+    if(!file) return;
+    lastFile = file;
+    prog.hidden = false; res.hidden = true; key.hidden = true;
+    try{
+      var out = await hostFile(file);
+      prog.hidden = true; res.hidden = false;
+      var im = document.getElementById("upImg");
+      if(file.type.indexOf("image/") === 0){ im.src = out.url; im.style.display = ""; }
+      else im.style.display = "none";
+      document.getElementById("upUrl").value = out.url;
+      document.getElementById("upHost").textContent = "✅ " + out.host + " দিয়ে আপলোড হয়েছে";
+      document.getElementById("upCopy").onclick = function(){
+        var inp = document.getElementById("upUrl"); inp.select();
+        try{ document.execCommand("copy"); }catch(e){}
+        if(navigator.clipboard) navigator.clipboard.writeText(out.url).catch(function(){});
+        toast("📋 লিংক কপি হয়েছে!");
+      };
+    }catch(e){
+      prog.hidden = true;
+      if(e && e.needKey){ key.hidden = false; }
+      else toast("❌ আপলোড ব্যর্থ — আবার চেষ্টা করো");
+    }
+  }
+  fi.addEventListener("change", function(){ go(fi.files && fi.files[0]); fi.value = ""; });
+  document.getElementById("upKeySave").addEventListener("click", function(){
+    var v = document.getElementById("upKeyIn").value.trim();
+    if(!v){ toast("Client-ID লেখো"); return; }
+    try{ localStorage.setItem("imgur_cid", v); }catch(e){}
+    toast("✅ সেভ হয়েছে!");
+    if(lastFile) go(lastFile);
+  });
+}
+/* ---- generic API tool runner ---- */
+function renderApiTool(tl){
+  openToolSheet(tl.icon + " " + tl.name);
+  var body = document.getElementById("toolBody");
+  var h = "";
+  (tl.params || []).forEach(function(p, i){
+    h += '<div class="apifield"><label>' + esc(p.label || p.k) + '</label><input data-pk="' + esc(p.k) + '" placeholder="' + esc(p.ph || "") + '" /></div>';
+  });
+  h += '<button class="abtn" id="apiGo">▶️ চালাও</button><div class="apires" id="apiRes" hidden></div>';
+  body.innerHTML = h;
+  document.getElementById("apiGo").addEventListener("click", async function(){
+    var qs = [];
+    body.querySelectorAll("[data-pk]").forEach(function(inp){
+      var v = inp.value.trim(); if(v) qs.push(encodeURIComponent(inp.getAttribute("data-pk")) + "=" + encodeURIComponent(v));
+    });
+    var url = tl.base + (qs.length ? ((tl.base.indexOf("?") >= 0 ? "&" : "?") + qs.join("&")) : "");
+    var box = document.getElementById("apiRes"); box.hidden = false; box.textContent = "⏳ লোড হচ্ছে...";
+    try{
+      var r = await fetch(url); var txt = await r.text();
+      try{ box.textContent = JSON.stringify(JSON.parse(txt), null, 2); }
+      catch(e){ box.textContent = txt; }
+    }catch(e){ box.textContent = "❌ ব্যর্থ: " + e.message; }
+  });
+}
+
 /* ---------------- themes ---------------- */
 var THEMES = [
   {id:"auto", name:"অটো ⚙️", c:["#f472b6","#a78bfa"], bg:"#130710"},
@@ -1249,7 +1417,7 @@ document.getElementById("themeClose").addEventListener("click", closeThemeSheet)
 document.getElementById("themeBack").addEventListener("click", closeThemeSheet);
 
 /* ---------------- misc ---------------- */
-loadChats(); renderChatList();
+loadChats(); renderChatList(); renderToolChips();
 if(!storageOK()) toast("⚠️ এই ব্রাউজারে চ্যাট সেভ হবে না — স্টোরেজ বন্ধ আছে");
 applyTheme(document.documentElement.getAttribute("data-theme") || "auto", true);
 window.addEventListener("offline", function(){ toast("📡 ইন্টারনেট নেই — চ্যাট করতে নেট লাগবে"); });
