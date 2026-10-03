@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a1628" />
+<title>SAGOR API Tools</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050d1a; --surface:#0a1628; --surface2:#0d1f38;
+  --border:rgba(0,212,255,.18); --text:#e8f4ff; --muted:#8ba5c8;
+  --acc:#00d4ff; --acc2:#7c3aed;
+}
+html,body{height:100%}
+body{
+  font-family:"Hind Siliguri",-apple-system,"Segoe UI",system-ui,sans-serif;
+  background:var(--bg); color:var(--text); min-height:100dvh;
+  background-image:
+    radial-gradient(700px 400px at 15% 0%, rgba(124,58,237,.12), transparent 60%),
+    radial-gradient(700px 500px at 90% 20%, rgba(0,212,255,.10), transparent 60%);
+  background-attachment:fixed;
+}
+.topbar{
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;
+  background:rgba(5,13,26,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.back{
+  border:1px solid var(--border);background:var(--surface);color:var(--text);
+  width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;text-decoration:none;
+  transition:transform .18s,box-shadow .18s;
+}
+.back:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,212,255,.25)}
+.brand{font-weight:700;font-size:17px}
+.brand small{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+.wrap{max-width:920px;margin:0 auto;padding:22px 16px 60px}
+.search{
+  width:100%;padding:13px 16px;border-radius:14px;margin-bottom:18px;
+  background:var(--surface);border:1px solid var(--border);color:var(--text);
+  font:inherit;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.search:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,212,255,.15)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:18px 12px;text-align:center;cursor:pointer;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  text-decoration:none;color:var(--text);display:block;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--acc);box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 22px rgba(0,212,255,.12)}
+.card .ic{font-size:34px;display:block;margin-bottom:10px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
+.card .nm{font-weight:700;font-size:14px}
+.card .ds{font-size:11.5px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* tool page */
+.toolhead{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.toolhead .ic{font-size:44px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.toolhead h1{font-size:22px}
+.toolhead p{color:var(--muted);font-size:13px;margin-top:2px}
+.endpoint{
+  display:inline-block;margin:10px 0 18px;padding:6px 12px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  font-family:ui-monospace,monospace;font-size:12.5px;color:var(--acc);
+}
+.form{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.field input,.field textarea{
+  width:100%;padding:12px 14px;border-radius:12px;font:inherit;font-size:14.5px;
+  background:var(--surface2);border:1px solid var(--border);color:var(--text);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field input:focus,.field textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,212,255,.14)}
+.run{
+  padding:13px;border:none;border-radius:12px;cursor:pointer;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04121e;
+  font:inherit;font-weight:700;font-size:15.5px;
+  transition:transform .18s,box-shadow .18s,filter .18s;
+}
+.run:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,212,255,.35);filter:brightness(1.05)}
+.run:disabled{opacity:.55;cursor:wait}
+#result{display:flex;flex-direction:column;gap:12px}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;animation:rise .25s ease}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.rcard.err{border-color:rgba(255,80,80,.5)}
+.rcard.err .msg{color:#ff8a8a;font-size:14.5px}
+.rimg{max-width:100%;border-radius:12px;display:block;margin:0 auto;max-height:380px}
+.rvid{width:100%;border-radius:12px;max-height:420px;background:#000}
+.raud{width:100%;margin-top:6px}
+.dlrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.dl{
+  display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:10px;
+  background:rgba(0,212,255,.12);border:1px solid var(--border);color:var(--acc);
+  text-decoration:none;font-size:13.5px;font-weight:600;transition:transform .18s,box-shadow .18s;
+}
+.dl:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,212,255,.2)}
+.rtext{font-size:14.5px;line-height:1.7;white-space:pre-wrap}
+.rjson{
+  background:#04090f;border:1px solid var(--border);border-radius:12px;padding:12px;
+  font-family:ui-monospace,monospace;font-size:12px;max-height:320px;overflow:auto;
+  white-space:pre-wrap;word-break:break-all;color:#9fd8ef;
+}
+.rlabel{font-size:12px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.loading{text-align:center;padding:34px;color:var(--muted);font-size:15px}
+.loading .spin{font-size:30px;display:inline-block;animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.count{font-size:13px;color:var(--muted);margin-bottom:12px}
+.foot{text-align:center;padding:26px;color:var(--muted);font-size:12.5px}
+.foot a{color:var(--acc);text-decoration:none}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="back" id="backBtn" href="./">←</a>
+  <div class="brand">🌐 SAGOR API Tools<small id="subTitle">সব API এক জায়গায়</small></div>
+</header>
+<main class="wrap" id="app"><div class="loading"><span class="spin">⏳</span><br>লোড হচ্ছে...</div></main>
+<footer class="foot">Powered by <a href="https://sagor-apis-nx.vercel.app">sagor-apis-nx</a> · Made for <a href="/">রাবিনা AI</a></footer>
+<script>
+var API_BASE = "https://sagor-apis-nx.vercel.app";
+var META = null;
+
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function qs(){ var o = {}; location.search.slice(1).split("&").forEach(function(p){ var kv = p.split("="); if(kv[0]) o[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || ""); }); return o; }
+
+async function loadMeta(){
+  var r = await fetch(API_BASE + "/sagor/meta?key=sagor");
+  if(!r.ok) throw new Error("meta");
+  var j = await r.json();
+  if(!j.apis) throw new Error("meta");
+  return j.apis;
+}
+
+/* ---------- hub ---------- */
+function renderHub(){
+  document.getElementById("backBtn").href = "/";
+  document.getElementById("subTitle").textContent = "সব API এক জায়গায়";
+  var keys = Object.keys(META).sort();
+  var h = '<input class="search" id="q" placeholder="🔍 API খোঁজো..." />';
+  h += '<div class="count">' + keys.length + 'টা API running 🟢</div>';
+  h += '<div class="grid" id="grid"></div>';
+  document.getElementById("app").innerHTML = h;
+  function draw(f){
+    var g = document.getElementById("grid"); g.innerHTML = "";
+    keys.filter(function(k){ return !f || (META[k].title + " " + k).toLowerCase().indexOf(f.toLowerCase()) >= 0; })
+      .forEach(function(k){
+        var a = META[k];
+        var el = document.createElement("a");
+        el.className = "card"; el.href = "?api=" + encodeURIComponent(k);
+        el.innerHTML = '<span class="ic">' + esc(a.icon || "🔌") + '</span><div class="nm">' + esc(a.title || k) + '</div><div class="ds">' + esc(a.endpoint || "") + '</div>';
+        g.appendChild(el);
+      });
+  }
+  draw("");
+  document.getElementById("q").addEventListener("input", function(e){ draw(e.target.value); });
+}
+
+/* ---------- tool page ---------- */
+function autoVal(name){
+  if(name === "key" || name === "apikey") return "sagor";
+  return null;
+}
+function renderTool(key){
+  var a = META[key];
+  if(!a){ document.getElementById("app").innerHTML = '<div class="empty">❌ API পাওয়া যায়নি<br><br><a href="./" style="color:var(--acc)">← সব API</a></div>'; return; }
+  document.getElementById("backBtn").href = "./";
+  document.getElementById("subTitle").textContent = a.endpoint || "";
+  var h = '<div class="toolhead"><span class="ic">' + esc(a.icon || "🔌") + '</span><div><h1>' + esc(a.title || key) + '</h1><p>' + esc(a.desc || "") + '</p></div></div>';
+  h += '<span class="endpoint">GET ' + esc(API_BASE + (a.endpoint || "")) + '</span>';
+  h += '<div class="form" id="form">';
+  (a.params || []).forEach(function(p){
+    var av = autoVal(p.name);
+    if(av !== null) return; // auto-filled
+    var ph = p.placeholder || ("Enter " + p.name + "...");
+    var long = /text|prompt|q$/.test(p.name) && p.name.length <= 6;
+    h += '<div class="field"><label>' + esc(p.name) + (p.required ? " *" : "") + '</label>' +
+      (long
+        ? '<textarea data-p="' + esc(p.name) + '" rows="3" placeholder="' + esc(ph) + '"></textarea>'
+        : '<input data-p="' + esc(p.name) + '" placeholder="' + esc(ph) + '" />') +
+      '</div>';
+  });
+  h += '<button class="run" id="runBtn">▶ চালাও</button></div>';
+  h += '<div id="result"></div>';
+  document.getElementById("app").innerHTML = h;
+  document.getElementById("runBtn").addEventListener("click", function(){ runTool(key, a); });
+}
+
+async function runTool(key, a){
+  var btn = document.getElementById("runBtn"), box = document.getElementById("result");
+  var params = [];
+  document.querySelectorAll("#form [data-p]").forEach(function(inp){
+    var v = inp.value.trim();
+    if(v) params.push(encodeURIComponent(inp.getAttribute("data-p")) + "=" + encodeURIComponent(v));
+  });
+  (a.params || []).forEach(function(p){
+    var av = autoVal(p.name);
+    if(av !== null) params.push(encodeURIComponent(p.name) + "=" + encodeURIComponent(av));
+  });
+  var url = API_BASE + (a.endpoint || "") + (params.length ? "?" + params.join("&") : "");
+  btn.disabled = true; btn.textContent = "⏳ চলছে...";
+  box.innerHTML = '<div class="loading"><span class="spin">⏳</span><br>API কল হচ্ছে...</div>';
+  try{
+    var r = await fetch(url);
+    var txt = await r.text(), j = null;
+    try{ j = JSON.parse(txt); }catch(e){}
+    box.innerHTML = "";
+    box.appendChild(renderResult(j !== null ? j : txt, url));
+  }catch(e){
+    box.innerHTML = '<div class="rcard err"><div class="msg">❌ ব্যর্থ: ' + esc(e.message) + '</div></div>';
+  }
+  btn.disabled = false; btn.textContent = "▶ চালাও";
+}
+
+/* ---------- smart result renderer ---------- */
+function findUrls(o, out){
+  out = out || [];
+  if(typeof o === "string"){ if(/^https?:\/\//i.test(o.trim())) out.push(o.trim()); }
+  else if(Array.isArray(o)){ o.forEach(function(v){ findUrls(v, out); }); }
+  else if(o && typeof o === "object"){ Object.keys(o).forEach(function(k){ findUrls(o[k], out); }); }
+  return out;
+}
+function kindOf(u){
+  var p = u.split("?")[0].toLowerCase();
+  if(/\.(jpg|jpeg|png|gif|webp|bmp|svg)$/.test(p)) return "img";
+  if(/\.(mp4|webm|mov|m4v)$/.test(p)) return "vid";
+  if(/\.(mp3|wav|m4a|ogg|opus)$/.test(p)) return "aud";
+  return "link";
+}
+function fname(u){ try{ var p = u.split("?")[0].split("/"); return decodeURIComponent(p[p.length - 1] || "file"); }catch(e){ return "file"; } }
+function renderResult(data, url){
+  var wrap = document.createElement("div");
+  function card(html, isErr){
+    var d = document.createElement("div");
+    d.className = "rcard" + (isErr ? " err" : "");
+    d.innerHTML = html;
+    wrap.appendChild(d);
+    return d;
+  }
+  if(data && typeof data === "object" && data.status === "error"){
+    card('<div class="msg">❌ ' + esc(data.message || "API error") + '</div>', true);
+    return wrap;
+  }
+  var obj = (data && typeof data === "object") ? data : null;
+  var payload = obj ? (obj.data !== undefined ? obj.data : obj) : null;
+  // text-ish answers (ai/gpt/deepai)
+  if(payload && typeof payload === "object" && typeof payload.reply === "string" && Object.keys(payload).length <= 3){
+    card('<div class="rtext">' + esc(payload.reply) + '</div>');
+  } else if(typeof payload === "string"){
+    card('<div class="rtext">' + esc(payload) + '</div>');
+  }
+  // media + links
+  var urls = [];
+  if(payload) findUrls(payload, urls);
+  urls = urls.filter(function(u, i){ return urls.indexOf(u) === i; }).slice(0, 12);
+  var mediaH = "", linkH = "";
+  urls.forEach(function(u){
+    var k = kindOf(u);
+    if(k === "img") mediaH += '<img class="rimg" loading="lazy" src="' + esc(u) + '" alt="" /><div class="dlrow"><a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🖼️ দেখো</a><a class="dl" href="' + esc(u) + '" download>⬇️ ডাউনলোড</a></div>';
+    else if(k === "vid") mediaH += '<video class="rvid" controls preload="metadata" src="' + esc(u) + '"></video><div class="dlrow"><a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🎬 দেখো</a><a class="dl" href="' + esc(u) + '" download>⬇️ ডাউনলোড</a></div>';
+    else if(k === "aud") mediaH += '<audio class="raud" controls preload="metadata" src="' + esc(u) + '"></audio><div class="dlrow"><a class="dl" href="' + esc(u) + '" download>⬇️ ডাউনলোড</a></div>';
+    else linkH += '<a class="dl" href="' + esc(u) + '" target="_blank" rel="noopener">🔗 ' + esc(fname(u)).slice(0, 34) + '</a>';
+  });
+  if(mediaH) card(mediaH);
+  if(linkH) card('<div class="rlabel">লিংক</div><div class="dlrow">' + linkH + '</div>');
+  // key facts (non-url, non-huge fields)
+  if(payload && typeof payload === "object" && !Array.isArray(payload)){
+    var facts = "";
+    Object.keys(payload).forEach(function(k){
+      var v = payload[k];
+      if(v == null || typeof v === "object") return;
+      var s = String(v);
+      if(/^https?:\/\//.test(s) || s.length > 300) return;
+      facts += '<div style="margin:5px 0;font-size:14px"><span style="color:var(--muted)">' + esc(k) + ':</span> <b>' + esc(s) + '</b></div>';
+    });
+    if(facts && !mediaH) card(facts);
+  }
+  // raw
+  var raw = document.createElement("div");
+  raw.className = "rcard";
+  var pre = document.createElement("pre");
+  pre.className = "rjson";
+  pre.textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+  raw.innerHTML = '<div class="rlabel">Raw response</div>';
+  raw.appendChild(pre);
+  wrap.appendChild(raw);
+  return wrap;
+}
+
+/* ---------- boot ---------- */
+(async function(){
+  try{
+    META = await loadMeta();
+    var q = qs();
+    if(q.api) renderTool(q.api);
+    else renderHub();
+  }catch(e){
+    document.getElementById("app").innerHTML = '<div class="empty">❌ API list লোড হয়নি<br><span style="font-size:13px">ইন্টারনেট চেক করে আবার চেষ্টা করো</span></div>';
+  }
+})();
+</script>
+</body>
+</html>

@@ -345,6 +345,10 @@ html[data-theme="light"] .topbar{ box-shadow:0 8px 26px rgba(43,18,36,.08); }
 .toolchip{display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);font-size:13px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;color:var(--text)}
 .toolchip:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:0 6px 16px rgba(var(--glowc),.2)}
 .toolhint{padding:2px 16px 10px;font-size:11px;opacity:.5}
+.apigrid{display:flex;flex-wrap:wrap;gap:8px;padding:2px 14px 12px}
+.apibtn{width:44px;height:44px;border-radius:13px;border:1px solid var(--border);background:var(--surface2);font-size:21px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.apibtn:hover{transform:translateY(-3px) scale(1.06);border-color:var(--acc);box-shadow:0 8px 18px rgba(var(--glowc),.25)}
+.apiload{opacity:.5;font-size:13px;padding:6px}
 .toolbody{padding:6px 2px 10px;display:flex;flex-direction:column;gap:12px}
 .upzone{border:2px dashed var(--border);border-radius:14px;padding:26px 12px;text-align:center;cursor:pointer;font-size:14px;transition:border-color .2s ease,background .2s ease}
 .upzone:hover{border-color:var(--acc);background:var(--acc-soft)}
@@ -392,6 +396,8 @@ html[data-theme="light"] .topbar{ box-shadow:0 8px 26px rgba(43,18,36,.08); }
   <div class="sidesec">🛠️ টুলস</div>
   <div class="toolchips" id="toolChips"></div>
   <div class="toolhint">＋ নতুন টুল/API add করতে আমাকে বলো</div>
+  <div class="sidesec">🌐 API ওয়েবসাইট</div>
+  <div class="apigrid" id="apiGrid"><div class="apiload">⏳</div></div>
   <div class="chatlist" id="chatList"></div>
   <div class="sidefoot">📱 শুধু এই ফোনে/ব্রাউজারে সেভ থাকে</div>
 </aside>
@@ -1377,6 +1383,30 @@ function renderApiTool(tl){
   });
 }
 
+/* ---------------- api websites (from sagor-apis-nx meta) ---------------- */
+var API_BASE = "https://sagor-apis-nx.vercel.app";
+var API_META = null;
+async function loadApiGrid(){
+  var g = document.getElementById("apiGrid"); if(!g) return;
+  try{
+    var r = await fetch(API_BASE + "/sagor/meta?key=sagor");
+    var j = await r.json();
+    API_META = j.apis || {};
+    var keys = Object.keys(API_META).sort();
+    g.innerHTML = "";
+    keys.forEach(function(k){
+      var a = API_META[k];
+      var b = document.createElement("button");
+      b.className = "apibtn"; b.textContent = a.icon || "🔌"; b.title = a.title || k;
+      b.setAttribute("aria-label", a.title || k);
+      b.addEventListener("click", function(){ location.href = "tools/?api=" + encodeURIComponent(k); });
+      g.appendChild(b);
+    });
+  }catch(e){
+    g.innerHTML = '<div class="apiload">লোড হয়নি</div>';
+  }
+}
+
 /* ---------------- themes ---------------- */
 var THEMES = [
   {id:"auto", name:"অটো ⚙️", c:["#f472b6","#a78bfa"], bg:"#130710"},
@@ -1417,7 +1447,7 @@ document.getElementById("themeClose").addEventListener("click", closeThemeSheet)
 document.getElementById("themeBack").addEventListener("click", closeThemeSheet);
 
 /* ---------------- misc ---------------- */
-loadChats(); renderChatList(); renderToolChips();
+loadChats(); renderChatList(); renderToolChips(); loadApiGrid();
 if(!storageOK()) toast("⚠️ এই ব্রাউজারে চ্যাট সেভ হবে না — স্টোরেজ বন্ধ আছে");
 applyTheme(document.documentElement.getAttribute("data-theme") || "auto", true);
 window.addEventListener("offline", function(){ toast("📡 ইন্টারনেট নেই — চ্যাট করতে নেট লাগবে"); });
