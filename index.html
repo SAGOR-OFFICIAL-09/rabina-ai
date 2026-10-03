@@ -1,0 +1,1260 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("rabina_theme")||"auto");}catch(e){document.documentElement.setAttribute("data-theme","auto");}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#160a12" />
+<title>রাবিনা AI — তোমার পার্সোনাল অ্যাসিস্ট্যান্ট</title>
+<link rel="icon" type="image/png" href="assets/icon.svg" />
+<link rel="apple-touch-icon" href="assets/icon.svg" />
+<link rel="manifest" href="assets/manifest.webmanifest" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="রাবিনা AI" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#130710; --bg2:#1a0b17; --surface:#221020; --surface2:#190c18;
+  --border:#3d2038; --text:#f7e9f2; --muted:#b99ab3; --faint:#7d5f78;
+  --ai-acc:#f472b6;
+  --acc:#f472b6; --acc-d:#db2777; --acc-l:#fbcfe8; --on-acc:#2b0716; --acc-soft:rgba(244,114,182,.13);
+  --glowc:244,114,182; --aur1:244,114,182; --aur2:167,139,250;
+  --shadow:0 18px 50px rgba(0,0,0,.45);
+  --r:18px;
+}
+@media (prefers-color-scheme: light){
+  html[data-theme="auto"]{--bg:#fdf6f9; --bg2:#fbeef4; --surface:#ffffff; --surface2:#faf0f5;
+    --border:#f0d9e4; --text:#2b1224; --muted:#8a5f7d; --faint:#b596a9;
+    --ai-acc:#db2777; --acc:#db2777; --acc-soft:rgba(219,39,119,.10);
+    --acc-d:#be185d; --acc-l:#9d174d; --on-acc:#ffffff; --glowc:219,39,119; --aur1:219,39,119; --aur2:167,139,250;
+    --shadow:0 18px 45px rgba(23,27,41,.12);}
+}
+/* explicit themes */
+html[data-theme="rose"]{--bg:#130710; --bg2:#1a0b17; --surface:#221020; --surface2:#190c18;
+  --border:#3d2038; --text:#f7e9f2; --muted:#b99ab3; --faint:#7d5f78;
+  --ai-acc:#f472b6; --acc:#f472b6; --acc-d:#db2777; --acc-l:#fbcfe8; --on-acc:#2b0716; --acc-soft:rgba(244,114,182,.13);
+  --glowc:244,114,182; --aur1:244,114,182; --aur2:167,139,250; --shadow:0 18px 50px rgba(0,0,0,.45);}
+html[data-theme="ocean"]{--bg:#04141f; --bg2:#071a28; --surface:#0a2233; --surface2:#0d2a40;
+  --border:#17405a; --text:#e9f5ff; --muted:#8fb0c9; --faint:#5f7f99;
+  --ai-acc:#38bdf8; --acc:#38bdf8; --acc-d:#0284c7; --acc-l:#bae6fd; --on-acc:#04141f; --acc-soft:rgba(56,189,248,.13);
+  --glowc:56,189,248; --aur1:56,189,248; --aur2:34,211,238; --shadow:0 18px 50px rgba(0,0,0,.45);}
+html[data-theme="violet"]{--bg:#120a1e; --bg2:#180e28; --surface:#1e1338; --surface2:#261a45;
+  --border:#3a2a63; --text:#f2ebff; --muted:#b3a1d8; --faint:#7f6ba3;
+  --ai-acc:#a78bfa; --acc:#a78bfa; --acc-d:#7c3aed; --acc-l:#ddd6fe; --on-acc:#170f2b; --acc-soft:rgba(167,139,250,.13);
+  --glowc:167,139,250; --aur1:167,139,250; --aur2:216,180,254; --shadow:0 18px 50px rgba(0,0,0,.45);}
+html[data-theme="mint"]{--bg:#06120e; --bg2:#0a1a14; --surface:#0d231a; --surface2:#122e23;
+  --border:#1e4433; --text:#eafbf2; --muted:#8fbfa5; --faint:#5f8a72;
+  --ai-acc:#34d399; --acc:#34d399; --acc-d:#059669; --acc-l:#a7f3d0; --on-acc:#06120e; --acc-soft:rgba(52,211,153,.13);
+  --glowc:52,211,153; --aur1:52,211,153; --aur2:110,231,183; --shadow:0 18px 50px rgba(0,0,0,.45);}
+html[data-theme="light"]{--bg:#fdf6f9; --bg2:#fbeef4; --surface:#ffffff; --surface2:#faf0f5;
+  --border:#f0d9e4; --text:#2b1224; --muted:#8a5f7d; --faint:#b596a9;
+  --ai-acc:#db2777; --acc:#db2777; --acc-d:#be185d; --acc-l:#9d174d; --on-acc:#ffffff; --acc-soft:rgba(219,39,119,.10);
+  --glowc:219,39,119; --aur1:219,39,119; --aur2:167,139,250; --shadow:0 18px 45px rgba(23,27,41,.12);}
+
+
+html,body{height:100%}
+body{
+  font-family:"Hind Siliguri",-apple-system,"Segoe UI",system-ui,sans-serif;
+  background:var(--bg); color:var(--text);
+  display:flex; flex-direction:column; height:100vh; height:100dvh; overflow:hidden;
+  -webkit-tap-highlight-color:transparent; transition:background .35s;
+}
+/* ---------- header ---------- */
+.topbar{
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  background:var(--bg);
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border); z-index:30; flex-shrink:0;
+}
+.brand{display:flex; align-items:center; gap:8px; font-weight:700; letter-spacing:.4px; font-size:16px; white-space:nowrap;}
+.brand img{width:28px;height:28px;border-radius:8px;display:block}
+
+
+.actions{display:flex; gap:6px; align-items:center}
+.iconbtn{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border);
+  background:var(--surface); color:var(--text); border-radius:12px; padding:8px 10px;
+  font:inherit; font-size:13.5px; font-weight:600; cursor:pointer}
+.iconbtn:hover{border-color:var(--acc)}
+.iconbtn svg{width:17px;height:17px}
+.install-btn{color:var(--acc); border-color:var(--acc)}
+.install-btn::after{content:"Install"; font-weight:700}
+/* ---------- chat ---------- */
+.chat{flex:1; overflow-y:auto; overscroll-behavior:contain; padding:18px 14px 8px; scroll-behavior:smooth}
+.col{max-width:780px; margin:0 auto}
+.row{display:flex; gap:10px; margin:0 0 14px; animation:rise .18s ease}
+@keyframes rise{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+.avatar{width:34px; height:34px; border-radius:12px; flex-shrink:0; overflow:hidden; margin-top:2px}
+.avatar svg{display:block; width:100%; height:100%}
+.row.user{justify-content:flex-end}
+.bubble{max-width:82%; padding:11px 14px; border-radius:var(--r); font-size:15.5px; line-height:1.62; overflow-wrap:anywhere}
+.row.ai .bubble{background:var(--surface); border:1px solid var(--border); border-top-left-radius:6px}
+.row.user .bubble{background:var(--acc); color:var(--on-acc); border-top-right-radius:6px; font-weight:500}
+.row.user .bubble a{color:inherit}
+.row.ai .wrap{max-width:82%; display:flex; flex-direction:column; gap:4px}
+.row.ai .wrap .bubble{max-width:100%}
+.macts{display:flex; gap:6px; flex-wrap:wrap; margin-top:2px}
+.mact{border:1px solid var(--border); background:transparent; color:var(--muted); font:inherit;
+  font-size:12px; font-weight:600; border-radius:999px; padding:3px 10px; cursor:pointer; display:inline-flex; align-items:center; gap:4px}
+.mact:hover{color:var(--acc); border-color:var(--acc)}
+.mact svg{width:13px;height:13px}
+.mact.retry{color:var(--acc); border-color:var(--acc)}
+.err-bubble{border:1px dashed var(--acc)!important; background:var(--acc-soft)!important}
+/* message typography */
+.bubble p{margin:0 0 8px}.bubble p:last-child{margin-bottom:0}
+.bubble h1,.bubble h2,.bubble h3{font-size:1.05em; margin:10px 0 6px; line-height:1.4}
+.bubble h1:first-child,.bubble h2:first-child,.bubble h3:first-child,.bubble p:first-child{margin-top:0}
+.bubble ul,.bubble ol{margin:6px 0 10px; padding-left:20px}
+.bubble li{margin:3px 0}
+.bubble blockquote{border-left:3px solid var(--acc); margin:8px 0; padding:4px 12px; color:var(--muted)}
+.bubble hr{border:0; border-top:1px solid var(--border); margin:12px 0}
+.bubble a{color:var(--acc); text-decoration:underline}
+.bubble code.ic{background:var(--acc-soft); color:var(--acc); padding:1px 7px; border-radius:6px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.86em}
+.row.user .bubble code.ic{background:rgba(0,0,0,.18); color:inherit}
+.codeblock{background:#0a0f1e; border:1px solid var(--border); border-radius:12px; margin:8px 0; overflow:hidden}
+.codeblock .cb-head{display:flex; align-items:center; justify-content:space-between; padding:7px 12px;
+  border-bottom:1px solid var(--border); font-size:12px; color:#9fb0d8; font-weight:600}
+.cb-copy{border:1px solid #2c3a63; background:#141e3a; color:#cfe0ff; font:inherit; font-size:12px;
+  font-weight:600; border-radius:8px; padding:3px 10px; cursor:pointer}
+.cb-copy:hover{border-color:var(--acc); color:#fff}
+.codeblock code{display:block; padding:12px; overflow-x:auto; color:#d9e4ff; font-size:13px; line-height:1.6;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; white-space:pre}
+@media (prefers-color-scheme: light){ .codeblock{background:#12162b} }
+/* typing dots */
+.typing{display:inline-flex; gap:6px; padding:13px 16px; align-items:center}
+.typing i{width:8px; height:8px; border-radius:50%; background:var(--muted); animation:tp 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tp{0%,100%{opacity:.35; transform:none} 50%{opacity:1; transform:translateY(-3px)}}
+/* live failover status next to the typing dots */
+.tt-bubble{display:flex; align-items:center; justify-content:center; gap:12px; padding:13px 16px; min-height:56px}
+.tt-bubble .typing{padding:0}
+.tt-status{font-size:13px; line-height:1.5; color:var(--muted); overflow-wrap:anywhere}
+@media (max-width:560px){ .tt-status{font-size:12.5px} .tt-bubble{gap:9px; padding:12px 13px} }
+/* empty state */
+.empty{max-width:560px; margin:6vh auto 0; text-align:center; padding:0 10px; display:none}
+.empty.show{display:block; animation:rise .25s ease}
+.empty .hero{width:112px; height:112px; border-radius:32px; margin:0 auto 16px; position:relative}
+.empty .hero img,.empty .hero svg{width:112px; height:112px; border-radius:32px; display:block}
+.empty h2{font-size:23px; margin-bottom:6px}
+.empty p{color:var(--muted); font-size:15px; margin-bottom:16px}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:18px}
+.chip{border:1px solid var(--border); background:var(--surface); color:var(--text); font:inherit;
+  font-size:13.5px; font-weight:500; border-radius:999px; padding:8px 14px; cursor:pointer; transition:.15s}
+.chip:hover{border-color:var(--acc); background:var(--acc-soft)}
+.note{font-size:12px; color:var(--faint)}
+/* ---------- composer ---------- */
+.composer-wrap{flex-shrink:0; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); border-top:1px solid var(--border);
+  background:var(--bg);
+  background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px)}
+.composer{max-width:780px; margin:0 auto; display:flex; gap:8px; align-items:flex-end;
+  background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:7px 7px 7px 8px}
+.composer:focus-within{border-color:var(--acc)}
+#input{flex:1; border:0; background:transparent; color:var(--text); font:inherit; font-size:15.5px;
+  line-height:1.5; resize:none; max-height:130px; padding:9px 6px; outline:none}
+#input::placeholder{color:var(--faint)}
+.cbtn{width:42px; height:42px; border-radius:50%; border:0; cursor:pointer; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; transition:.15s}
+.cbtn svg{width:19px; height:19px}
+#micBtn{background:var(--surface2); color:var(--muted); border:1px solid var(--border)}
+#attachBtn{background:var(--surface2); color:var(--muted); border:1px solid var(--border)}
+.imgpreview{max-width:780px; margin:0 auto 8px; position:relative; width:fit-content}
+.imgpreview[hidden]{display:none}
+.imgpreview img{max-height:90px; border-radius:12px; border:1px solid var(--border); display:block}
+.imgpreview button{position:absolute; top:-8px; right:-8px; width:24px; height:24px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:14px; line-height:1; cursor:pointer}
+.bubble img.attached{display:block; max-width:100%; border-radius:12px; margin-bottom:8px}
+.imgpreview .fname{display:block; max-width:230px; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:12px; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.bubble .filechip{display:flex; align-items:center; gap:10px; background:rgba(0,0,0,.20); border-radius:12px; padding:10px 12px; margin-bottom:8px; color:inherit; text-decoration:none}
+.bubble .filechip .fic{font-size:22px; flex-shrink:0}
+.bubble .filechip .fnm{font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:190px}
+.bubble .filechip .fnm small{display:block; opacity:.75; font-size:11.5px}
+#micBtn.on{background:var(--acc); color:var(--on-acc); border-color:var(--acc); animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--acc-soft)}50%{box-shadow:0 0 0 9px transparent}}
+#sendBtn{background:var(--acc); color:var(--on-acc)}
+#sendBtn:disabled{opacity:.35; cursor:default}
+.hint{max-width:780px; margin:7px auto 0; text-align:center; font-size:11.5px; color:var(--faint)}
+/* ---------- overlays ---------- */
+.overlay{position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
+  padding:20px; background:rgba(2,4,10,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.overlay[hidden]{display:none}
+.sheet{background:var(--bg2); border:1px solid var(--border); border-radius:24px; max-width:420px; width:100%;
+  padding:26px 24px; text-align:center; box-shadow:var(--shadow); animation:rise .22s ease}
+.sheet .big{font-size:44px; margin-bottom:10px}
+.sheet h2{font-size:20px; margin-bottom:8px}
+.sheet p{color:var(--muted); font-size:14.5px; line-height:1.6; margin-bottom:8px}
+.sheet .steps{text-align:left; margin:12px 0 18px; color:var(--text); font-size:14.5px; line-height:1.7}
+.sheet .steps li{margin:7px 0; list-style:none; padding-left:28px; position:relative}
+.sheet .steps li::before{content:attr(data-n); position:absolute; left:0; top:2px; width:20px; height:20px;
+  border-radius:50%; background:var(--acc); color:var(--on-acc); font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center}
+.btnrow{display:flex; gap:10px; margin-top:18px}
+.btn{flex:1; border:0; border-radius:14px; font:inherit; font-weight:700; font-size:15px; padding:13px; cursor:pointer}
+.btn.primary{background:var(--acc); color:var(--on-acc)}
+.btn.ghost{background:var(--surface); color:var(--text); border:1px solid var(--border)}
+/* toast */
+#toast{position:fixed; left:50%; bottom:110px; transform:translateX(-50%) translateY(10px); z-index:120;
+  background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:13.5px; font-weight:600;
+  padding:9px 18px; border-radius:999px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:.25s}
+#toast.show{opacity:1; transform:translateX(-50%)}
+/* ---------- responsive ---------- */
+@media (max-width:560px){
+  .brand span.nm{display:none}
+
+  .install-btn{padding:8px}
+  .install-btn::after{content:""}
+  .bubble,.row.ai .wrap{max-width:90%}
+  .hint{display:none}
+  #toast{bottom:96px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important; transition-duration:.01ms!important}
+  .chat{scroll-behavior:auto}
+}
+</style>
+<style>
+/* ================= Premium Rabina theme ================= */
+:root{ --acc2:#a78bfa; }
+/* aurora background */
+body::before, body::after{ content:""; position:fixed; inset:0; z-index:0; pointer-events:none; }
+body::before{
+  background:
+    radial-gradient(600px 400px at 15% 10%, rgba(var(--aur1),.14), transparent 60%),
+    radial-gradient(700px 500px at 85% 20%, rgba(var(--aur2),.12), transparent 60%),
+    radial-gradient(800px 600px at 50% 100%, rgba(var(--aur1),.10), transparent 60%);
+  animation:aurora 22s ease-in-out infinite alternate;
+}
+body::after{
+  background:radial-gradient(500px 300px at 80% 85%, rgba(var(--aur1),.08), transparent 60%);
+  animation:aurora 28s ease-in-out infinite alternate-reverse;
+}
+@keyframes aurora{ from{transform:translate3d(-2%,-1%,0) scale(1)} to{transform:translate3d(2%,2%,0) scale(1.06)} }
+.topbar,.chat,.composer-wrap{ position:relative; z-index:1; }
+/* header */
+.topbar{ border-bottom:1px solid rgba(var(--glowc),.18); box-shadow:0 8px 30px rgba(0,0,0,.25); }
+.brand .nm{ color:var(--acc-l); text-shadow:0 0 18px rgba(var(--glowc),.55); font-size:17px; letter-spacing:.5px; }
+.brand img{ box-shadow:0 0 16px rgba(var(--glowc),.5); }
+.iconbtn{ transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.iconbtn:hover{ transform:translateY(-1px); border-color:var(--acc); box-shadow:0 6px 16px rgba(var(--glowc),.25); }
+/* chat */
+.chat::-webkit-scrollbar{ width:8px; }
+.chat::-webkit-scrollbar-thumb{ background:rgba(var(--glowc),.3); border-radius:8px; }
+.chat::-webkit-scrollbar-thumb:hover{ background:rgba(var(--glowc),.5); }
+.chat{ scrollbar-width:thin; scrollbar-color:rgba(var(--glowc),.35) transparent; }
+.avatar{ box-shadow:0 0 0 2px rgba(var(--glowc),.35), 0 0 18px rgba(var(--glowc),.35); transition:transform .22s ease, box-shadow .22s ease; }
+.row.ai:hover .avatar{ transform:scale(1.08) rotate(-4deg); box-shadow:0 0 0 2px rgba(var(--glowc),.6), 0 0 26px rgba(var(--glowc),.55); }
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--acc),var(--acc-d));
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 8px 24px rgba(var(--glowc),.35);
+}
+.row.ai .bubble{
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.row.ai .bubble:hover{ border-color:rgba(var(--glowc),.45); box-shadow:0 10px 34px rgba(0,0,0,.4), 0 0 22px rgba(var(--glowc),.14); transform:translateY(-1px); }
+/* typing dots */
+.typing i{ background:var(--acc); box-shadow:0 0 8px var(--acc); }
+/* message actions */
+.mact{ transition:transform .18s ease, box-shadow .18s ease, color .18s ease, border-color .18s ease; }
+.mact:hover{ transform:translateY(-1px); box-shadow:0 4px 12px rgba(var(--glowc),.25); }
+/* code blocks */
+.codeblock{ transition:border-color .25s ease, box-shadow .25s ease; }
+.codeblock:hover{ border-color:rgba(var(--glowc),.4); box-shadow:0 8px 26px rgba(0,0,0,.4); }
+/* chips */
+.chip{ transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease; }
+.chip:hover{ transform:translateY(-2px); border-color:var(--acc); background:var(--acc-soft); box-shadow:0 8px 20px rgba(var(--glowc),.25); }
+.chip:active{ transform:translateY(0) scale(.98); }
+/* hero */
+.empty .hero{ animation:floaty 5s ease-in-out infinite; filter:drop-shadow(0 12px 28px rgba(var(--glowc),.4)); }
+@keyframes floaty{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+.empty h2{ color:var(--acc-l); text-shadow:0 0 24px rgba(var(--glowc),.5); font-size:26px; letter-spacing:.3px; }
+/* composer */
+.composer{ transition:border-color .25s ease, box-shadow .25s ease; }
+.composer:focus-within{ border-color:rgba(var(--glowc),.6); box-shadow:0 0 0 3px rgba(var(--glowc),.15), 0 12px 40px rgba(0,0,0,.35); }
+.cbtn{ transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease, border-color .18s ease; }
+.cbtn:hover{ transform:scale(1.08); }
+.cbtn:active{ transform:scale(.94); }
+#sendBtn{ background:linear-gradient(135deg,var(--acc),var(--acc-d)); box-shadow:0 6px 18px rgba(var(--glowc),.4); }
+#sendBtn:hover:not(:disabled){ box-shadow:0 8px 28px rgba(var(--glowc),.65); }
+#micBtn:hover,#attachBtn:hover{ border-color:var(--acc); color:var(--acc); box-shadow:0 0 14px rgba(var(--glowc),.25); }
+/* attach preview + file chip */
+.imgpreview img{ box-shadow:0 8px 22px rgba(var(--glowc),.3); }
+.bubble .filechip{ transition:transform .18s ease, box-shadow .18s ease; }
+.bubble .filechip:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.35); }
+/* toast */
+#toast{ border-color:rgba(var(--glowc),.4); box-shadow:0 10px 30px rgba(0,0,0,.4), 0 0 20px rgba(var(--glowc),.15); }
+/* light mode */
+@media (prefers-color-scheme: light){
+  html[data-theme="auto"] body::before{ opacity:.65; }
+  html[data-theme="auto"] .brand .nm{ color:var(--acc-d); text-shadow:0 0 16px rgba(var(--glowc),.25); }
+  html[data-theme="auto"] .empty h2{ color:var(--acc-d); text-shadow:0 0 18px rgba(var(--glowc),.22); }
+  html[data-theme="auto"] .row.user .bubble{ box-shadow:0 8px 22px rgba(var(--glowc),.3); }
+  html[data-theme="auto"] .row.ai .bubble{ box-shadow:0 10px 26px rgba(43,18,36,.1); }
+  html[data-theme="auto"] .row.ai .bubble:hover{ box-shadow:0 10px 30px rgba(43,18,36,.14), 0 0 20px rgba(var(--glowc),.12); }
+  html[data-theme="auto"] .topbar{ box-shadow:0 8px 26px rgba(43,18,36,.08); }
+}
+html[data-theme="light"] body::before{ opacity:.65; }
+html[data-theme="light"] .brand .nm{ color:var(--acc-d); text-shadow:0 0 16px rgba(var(--glowc),.25); }
+html[data-theme="light"] .empty h2{ color:var(--acc-d); text-shadow:0 0 18px rgba(var(--glowc),.22); }
+html[data-theme="light"] .row.user .bubble{ box-shadow:0 8px 22px rgba(var(--glowc),.3); }
+html[data-theme="light"] .row.ai .bubble{ box-shadow:0 10px 26px rgba(43,18,36,.1); }
+html[data-theme="light"] .row.ai .bubble:hover{ box-shadow:0 10px 30px rgba(43,18,36,.14), 0 0 20px rgba(var(--glowc),.12); }
+html[data-theme="light"] .topbar{ box-shadow:0 8px 26px rgba(43,18,36,.08); }
+@media (prefers-reduced-motion: reduce){
+  body::before, body::after, .empty .hero{ animation:none !important; }
+}
+/* sidebar history */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:292px;max-width:86vw;z-index:110;background:var(--surface);border-right:1px solid var(--border);transform:translateX(-106%);transition:transform .3s cubic-bezier(.2,.8,.25,1);display:flex;flex-direction:column;box-shadow:24px 0 60px rgba(0,0,0,.45)}
+.sidebar.open{transform:none}
+.sideback{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.sidehead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);font-weight:700;font-size:15px}
+.newchat{margin:12px 14px 8px;padding:11px;border-radius:12px;border:1px solid rgba(var(--glowc),.4);background:var(--acc-soft);color:var(--acc);font-weight:700;font-size:14px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+.newchat:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(var(--glowc),.25)}
+.chatlist{flex:1;overflow-y:auto;padding:6px 10px 12px;display:flex;flex-direction:column;gap:6px}
+.chatitem{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.chatitem:hover{background:var(--surface2);border-color:var(--border);transform:translateX(2px)}
+.chatitem.active{border-color:var(--acc);background:var(--acc-soft)}
+.chatitem .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px}
+.chatitem .d{font-size:11px;opacity:.55;flex-shrink:0}
+.chatitem .cdel{border:none;background:transparent;color:inherit;opacity:.4;cursor:pointer;font-size:12px;padding:4px;border-radius:6px;flex-shrink:0}
+.chatitem .cdel:hover{opacity:1;color:#f87171}
+.sideempty{padding:24px 12px;text-align:center;opacity:.55;font-size:13.5px}
+.sidefoot{padding:12px 16px;border-top:1px solid var(--border);font-size:12px;opacity:.55;text-align:center}
+.bubble .filechip.off{opacity:.8;cursor:default}
+.bubble .filechip.off:hover{transform:none;box-shadow:none}
+/* theme sheet */
+.sheetback{position:fixed;inset:0;z-index:115;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:116;background:var(--surface);border-top:1px solid var(--border);border-radius:20px 20px 0 0;padding:14px 18px 28px;animation:rise .25s ease;max-width:560px;margin:0 auto;box-shadow:0 -18px 60px rgba(0,0,0,.5)}
+.sheethead{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px;padding:4px 2px}
+.themegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.themecard{border:2px solid var(--border);border-radius:14px;padding:10px 8px;background:var(--surface2);cursor:pointer;text-align:center;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.themecard:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.themecard.active{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.themecard .swatch{height:46px;border-radius:10px;margin-bottom:8px}
+.themecard .tnm{font-size:13px;font-weight:700}
+</style>
+</head>
+<body data-mode="ai">
+
+<header class="topbar">
+  <button class="iconbtn" id="menuBtn" aria-label="মেনু">☰</button>
+  <div class="brand">
+    <img src="assets/icon.svg" alt="রাবিনা AI" />
+    <span class="nm">রাবিনা AI 🌸</span>
+  </div>
+
+  <div class="actions">
+    <button class="iconbtn" id="themeBtn" title="থিম বদলাও" aria-label="থিম">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.3" fill="currentColor" stroke="none"/><circle cx="12.5" cy="7.8" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="10.5" r="1.3" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button class="iconbtn install-btn" id="installBtn" hidden title="ফোনে ইন্সটল করো">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <button class="iconbtn" id="newChatBtn" title="নতুন চ্যাট">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+  </div>
+</header>
+<div class="sideback" id="sideBack" hidden></div>
+<aside class="sidebar" id="sidebar" aria-label="চ্যাট হিস্ট্রি">
+  <div class="sidehead"><span>💬 চ্যাট হিস্ট্রি</span><button class="iconbtn" id="sideClose" aria-label="বন্ধ করো">✕</button></div>
+  <button class="newchat" id="sideNewChatBtn">＋ নতুন চ্যাট</button>
+  <div class="chatlist" id="chatList"></div>
+  <div class="sidefoot">📱 শুধু এই ফোনে/ব্রাউজারে সেভ থাকে</div>
+</aside>
+<div class="sheetback" id="themeBack" hidden></div>
+<div class="sheet" id="themeSheet" hidden>
+  <div class="sheethead"><span>🎨 থিম বেছে নাও</span><button class="iconbtn" id="themeClose" aria-label="বন্ধ করো">✕</button></div>
+  <div class="themegrid" id="themeGrid"></div>
+</div>
+
+<main class="chat" id="chatScroll">
+  <div class="col" id="msgCol">
+    <section class="empty show" id="emptyAi">
+      <div class="hero"><img src="assets/icon.svg" alt="রাবিনা AI" /></div>
+      <h2>আমি রাবিনা 🌸</h2>
+      <p>তোমার পার্সোনাল AI অ্যাসিস্ট্যান্ট — পড়াশোনা, প্রশ্ন-উত্তর, লেখালেখি, কোড আর দৈনন্দিন সব কাজে সাহায্য করি।</p>
+      <div class="chips">
+        <button class="chip" data-chip>আজকের পড়ার রুটিন বানিয়ে দাও 📚</button>
+        <button class="chip" data-chip>আমাকে মোটিভেশন দাও 💪</button>
+        <button class="chip" data-chip>একটা ছোট কবিতা লেখো 🌷</button>
+        <button class="chip" data-chip>তুমি কী কী করতে পারো?</button>
+      </div>
+    </section>
+
+    <div id="msgs"></div>
+  </div>
+</main>
+
+<footer class="composer-wrap">
+  <div class="imgpreview" id="imgPreview" hidden>
+    <img id="imgPreviewImg" alt="আপলোড" />
+    <span id="filePreviewName" class="fname" hidden></span>
+    <button id="imgPreviewX" type="button" aria-label="সরাও">×</button>
+  </div>
+  <div class="composer">
+    <button class="cbtn" id="attachBtn" title="ফাইল পাঠাও" aria-label="ফাইল আপলোড">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+    </button>
+    <input type="file" id="fileInput" hidden />
+    <button class="cbtn" id="micBtn" title="ভয়েসে বলো" aria-label="ভয়েস ইনপুট">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </button>
+    <textarea id="input" rows="1" placeholder="রাবিনাকে কিছু জিজ্ঞেস করো…" aria-label="মেসেজ লিখুন"></textarea>
+    <button class="cbtn" id="sendBtn" title="পাঠাও" aria-label="পাঠাও" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.8 12 3.4 3.6l2.6 7.2 7.5 1.2-7.5 1.2z"/></svg>
+    </button>
+  </div>
+  <p class="hint">Enter = পাঠানো · Shift+Enter = নতুন লাইন</p>
+</footer>
+
+<!-- install guide (when no native prompt) -->
+<div class="overlay" id="installGuide" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="igTitle">
+    <div class="big">📲</div>
+    <h2 id="igTitle">ফোনে ইন্সটল করো</h2>
+    <ol class="steps" id="igSteps"></ol>
+    <div class="btnrow"><button class="btn primary" id="igClose">ঠিক আছে</button></div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<!-- keep third-party scripts out: only Google Fonts; every AI engine is plain fetch -->
+
+<script>
+(function(){
+"use strict";
+/* ================================================================
+   রাবিনা AI — personal-assistant chat. Powered only by SAGOR DeepAI (sagor-apis-nx).
+   Free, keyless, CORS-open providers, all verified live 2026-10-02:
+     1. OVHcloud AI Endpoints — OpenAI-compatible, rotates 4 models
+        (each model has its own free anonymous quota)
+     2. Pollinations (/openai) — separate anonymous chat pool
+     3. Pollinations legacy GET — different route/quota
+     4. AI Horde — anonymous crowd GPU (async, slower), last resort
+   Disqualified candidates (tested 2026-10-02, do NOT re-add): Duck.ai/duckduckgo
+   chat = anti-bot JS challenge (not keyless); Puter.js SDK = auth popup on "web"
+   env (not keyless); blackbox.ai/api/chat = 404; gptgod.online/v1 = 405;
+   api.nexra.io host = dead; llm.chutes.ai w/o key = 429.
+   Rules: try each engine in order; an engine that fails is cooled
+   down for 3 minutes so later messages skip it; on success its
+   record is cleared. One provider going down never stops the chat.
+   TIMEOUT POLICY (anti-freeze): per-request timeouts are short
+   (OVH 13s/model, Pollinations 18s) and the whole chain is capped
+   by GLOBAL_BUDGET_MS — a dead/slow provider can never leave the
+   (provider that answers headers and then stalls its body is cut off too) and a
+   shared global AbortController that cancels the active request the moment
+   the 85s budget expires.
+   ================================================================ */
+var GLOBAL_BUDGET_MS = 85000;         // total failover budget per message (~85s)
+var T_OVH_MODEL = 13000;              // per-model request timeout, OVH
+var T_POLLO = 18000;                  // per-alias request timeout, Pollinations /openai
+var T_POLLG = 18000;                  // legacy GET request timeout
+var T_HORDE_SUBMIT = 12000;           // horde async-submit timeout
+var T_HORDE_STATUS = 10000;           // horde status-poll request timeout
+var ENG_OVH  = "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions";
+var OVH_MODELS = ["gpt-oss-20b", "Mistral-Small-3.2-24B-Instruct-2506",
+                  "Mistral-Nemo-Instruct-2407", "Qwen3-Coder-30B-A3B-Instruct"];
+var ENG_POLLO = "https://text.pollinations.ai/openai";
+var POLLO_MODELS = ["openai", "openai-fast"];
+var ENG_POLLG = "https://text.pollinations.ai/";
+var ENG_HORDE = "https://stablehorde.net/api/v2";
+var ENG_DEEPAI = "https://sagor-apis-nx.vercel.app/sagor/deepai?key=sagor&prompt=";
+var HORDE_MODELS = ["aphrodite/TheDrummer/Skyfall-31B-v4.2",
+                    "aphrodite/TheDrummer/Behemoth-X-123B-v2.1"];
+var COOLDOWN_MS = 3 * 60 * 1000;
+var ovhCursor = 0, polloCursor = 0;
+var downUntil = {};   // engine id -> timestamp; cooled-down engines are skipped
+
+var RABINA_SYS = "তুমি রাবিনা — সাগরের পার্সোনাল AI অ্যাসিস্ট্যান্ট, একজন যত্নশীল, বুদ্ধিমতী ও বন্ধুসুলভ মেয়ে। নিয়ম: " +
+"(1) ডিফল্টে বাংলায় (ঢাকাইয়া কথ্য ভাষায়, মিষ্টি ও আন্তরিক টোনে) উত্তর দাও; ইউজার ইংরেজিতে লিখলে ইংরেজিতে দাও। " +
+"(2) সব কাজে সাহায্য করো — পড়াশোনা, প্রশ্ন-উত্তর, লেখালেখি, কোড, গল্প-কবিতা, মোটিভেশন, দৈনন্দিন পরামর্শ, মজা। " +
+"(3) কোড দিলে ```language ফেন্সড কোড ব্লক ব্যবহার করো। " +
+"(4) উত্তর অপ্রয়োজনে খুব লম্বা করো না; লম্বা উত্তরে ছোট প্যারা বা পয়েন্টে ভাগ করো। " +
+"(5) ক্ষতিকর বা অবৈধ বিষয়ে সাহায্য না করে নরমভাবে জানিয়ে বিকল্প দাও। " +
+"(6) মাঝে মাঝে হালকা ইমোজি দাও, কিন্তু অতিরিক্ত না।";
+
+/* ---------------- state ---------------- */
+var mode = "ai";
+var hist = { ai: [] };                   // {role:'user'|'assistant', content}
+var busy = false;
+var adultOk = false;
+var els = {
+  body: document.body, msgs: document.getElementById("msgs"),
+  scroll: document.getElementById("chatScroll"),
+  input: document.getElementById("input"), send: document.getElementById("sendBtn"),
+  mic: document.getElementById("micBtn"), emptyAi: document.getElementById("emptyAi"),
+  toast: document.getElementById("toast")
+};
+
+/* ---------------- avatar (Rabina) ---------------- */
+function svgRabina(s){
+  return '<svg viewBox="0 0 48 48" width="'+s+'" height="'+s+'">' +
+  '<rect width="48" height="48" rx="14" fill="#2b0f24"/>' +
+  '<path d="M13 22a11 11 0 0 1 22 0v9a11 11 0 0 1-22 0z" fill="#8a2f5c"/>' +
+  '<circle cx="24" cy="21" r="8" fill="#ffd9e8"/>' +
+  '<path d="M16 19a8 8 0 0 1 16 0l-.6-4.2A8.6 8.6 0 0 0 24 13a8.6 8.6 0 0 0-7.4 1.8z" fill="#8a2f5c"/>' +
+  '<circle cx="21" cy="21.5" r="1.3" fill="#3b1230"/>' +
+  '<circle cx="27" cy="21.5" r="1.3" fill="#3b1230"/>' +
+  '<circle cx="18.6" cy="24.6" r="1.5" fill="#f9a8d4" opacity=".8"/>' +
+  '<circle cx="29.4" cy="24.6" r="1.5" fill="#f9a8d4" opacity=".8"/>' +
+  '<path d="M21.5 25.8q2.5 2 5 0" stroke="#b83a6e" stroke-width="1.6" fill="none" stroke-linecap="round"/>' +
+  '<path d="M13 40q11-9 22 0v8H13z" fill="var(--acc)"/>' +
+  '<circle cx="38.5" cy="9.5" r="2.2" fill="#f9a8d4"/></svg>';
+}
+
+/* ---------------- toast ---------------- */
+var toastT = null;
+function toast(msg){
+  els.toast.textContent = msg;
+  els.toast.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(function(){ els.toast.classList.remove("show"); }, 2600);
+}
+function scrollBottom(){ els.scroll.scrollTop = els.scroll.scrollHeight; }
+
+/* ---------------- markdown (safe) ---------------- */
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+function inlineMd(s){
+  // strip stale typewriter artifacts first: none needed; work on escaped text
+  s = s.replace(/`([^`\n]+)`/g, "<code class=\"ic\">$1</code>");
+  s = s.replace(/\*\*([^*][\s\S]*?)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|\W)\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  s = s.replace(/_([^_\n]+)_/g, "<em>$1</em>");
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  return s;
+}
+function md(src){
+  var fences = [];
+  var t = esc(src).replace(/```(\w*)\n?([\s\S]*?)(?:```|$)/g, function(_, lang, code){
+    var idx = fences.length;
+    fences.push('<pre class="codeblock"><div class="cb-head"><span>' + (lang || "code") +
+      '</span><button type="button" class="cb-copy">কপি</button></div><code>' +
+      code.replace(/^\n+|\n+$/g, "") + "</code></pre>");
+    return "\n%%FENCE" + idx + "%%\n";
+  });
+  var chunks = t.split(/\n{2,}/), out = [];
+  for (var i = 0; i < chunks.length; i++){
+    var c = chunks[i].replace(/^\n+|\n+$/g, "");
+    if (!c) continue;
+    var fm = c.match(/^%%FENCE(\d+)%%$/);
+    if (fm){ out.push(fences[+fm[1]]); continue; }
+    var hm = c.match(/^(#{1,3})\s+(.*)$/);
+    if (hm){ out.push("<h" + hm[1].length + ">" + inlineMd(hm[2]) + "</h" + hm[1].length + ">"); continue; }
+    if (/^---+$/.test(c)){ out.push("<hr/>"); continue; }
+    var lines = c.split("\n");
+    if (lines.every(function(l){ return /^\s*>\s?/.test(l); })){
+      out.push("<blockquote>" + lines.map(function(l){ return inlineMd(l.replace(/^\s*>\s?/, "")); }).join("<br/>") + "</blockquote>"); continue; }
+    if (lines.every(function(l){ return /^\s*[-*]\s+/.test(l); })){
+      out.push("<ul>" + lines.map(function(l){ return "<li>" + inlineMd(l.replace(/^\s*[-*]\s+/, "")) + "</li>"; }).join("") + "</ul>"); continue; }
+    if (lines.every(function(l){ return /^\s*\d+\.\s+/.test(l); })){
+      out.push("<ol>" + lines.map(function(l){ return "<li>" + inlineMd(l.replace(/^\s*\d+\.\s+/, "")) + "</li>"; }).join("") + "</ol>"); continue; }
+    out.push("<p>" + inlineMd(c.replace(/\n/g, "<br/>")) + "</p>");
+  }
+  return out.join("");
+}
+
+/* ---------------- API ---------------- */
+function buildMessages(){
+  var sys = RABINA_SYS;
+  var ms = [{ role: "system", content: sys }];
+  var h = hist[mode].slice(-14);
+  for (var i = 0; i < h.length; i++) ms.push({ role: h[i].role, content: h[i].content.slice(0, 2500) });
+  return ms;
+}
+/* fetch + full body read with a hard timeout (rejects on timeout / network /
+   HTTP errors). The abort timer stays armed until the ENTIRE body is read, so
+   a provider that answers headers and then stalls cannot freeze the chain.
+   chainSignal: the global-budget abort signal — expires the active request. */
+function fetchBodyT(url, opts, ms, asJson, chainSignal){
+  var ctrl = new AbortController();
+  var to = setTimeout(function(){ ctrl.abort(); }, ms);
+  opts = opts || {};
+  var anyFn = (window.AbortSignal && AbortSignal.any) ? AbortSignal.any : null;
+  opts.signal = (anyFn && chainSignal) ? anyFn([ctrl.signal, chainSignal]) : ctrl.signal;
+  function done(){ clearTimeout(to); }
+  return fetch(url, opts).then(function(r){
+    return (asJson ? r.json() : r.text()).then(function(data){
+      done();
+      return { r: r, data: data };
+    }, function(e){ done(); throw e; });
+  }, function(e){ done(); throw e; });
+}
+function chatContent(json){
+  return json && json.choices && json.choices[0] && json.choices[0].message &&
+         json.choices[0].message.content;
+}
+/* Engine 1: OVH — rotates models to share the free per-model quotas */
+function engOvh(msgs, temp, deadline, pulse, chainSignal){
+  return (async function(){
+    for (var k = 0; k < OVH_MODELS.length; k++){
+      if (Date.now() >= deadline) break;      // global budget exhausted — abort early
+      if (pulse) pulse("মডেল " + bnNum(k + 1));
+      var m = OVH_MODELS[(ovhCursor + k) % OVH_MODELS.length];
+      try{
+        var res = await fetchBodyT(ENG_OVH, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ model: m, messages: msgs, max_tokens: 750, temperature: temp })
+        }, Math.max(2000, Math.min(T_OVH_MODEL, deadline - Date.now())), true, chainSignal);
+        if (!res.r.ok) continue;
+        var c = chatContent(res.data);
+        if (c && c.trim()){
+          ovhCursor = (ovhCursor + 1) % OVH_MODELS.length;
+          return c.trim();
+        }
+      } catch(e){ /* timeout or error — abort this model, try next */ }
+    }
+    throw new Error("ovh");
+  })();
+}
+/* Engine 2: Pollinations /openai — its own anonymous pool */
+function engPollOai(msgs, temp, deadline, pulse, chainSignal){
+  return (async function(){
+    for (var k = 0; k < POLLO_MODELS.length; k++){
+      if (Date.now() >= deadline) break;
+      if (pulse) pulse("প্রচেষ্টা " + bnNum(k + 1));
+      var m = POLLO_MODELS[(polloCursor + k) % POLLO_MODELS.length];
+      try{
+        var res = await fetchBodyT(ENG_POLLO, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ model: m, messages: msgs, max_tokens: 750, temperature: temp })
+        }, Math.max(2000, Math.min(T_POLLO, deadline - Date.now())), true, chainSignal);
+        if (!res.r.ok) continue;
+        var c = chatContent(res.data);
+        if (c && c.trim()){
+          polloCursor = (polloCursor + 1) % POLLO_MODELS.length;
+          return c.trim();
+        }
+      } catch(e){ /* try next alias */ }
+    }
+    throw new Error("pollo");
+  })();
+}
+/* Engine 3: Pollinations legacy GET — separate route/quota */
+function engPollGet(msgs, temp, deadline, chainSignal){
+  var sys = RABINA_SYS;
+  var parts = [sys];
+  var h = hist[mode].slice(-6);
+  for (var i = 0; i < h.length; i++)
+    parts.push((h[i].role === "user" ? "ব্যবহারকারী" : "তুমি") + ": " + h[i].content.slice(0, 400));
+  var prompt = parts.join("\n").slice(0, 1400);
+  return (async function(){
+    if (Date.now() >= deadline) throw new Error("pollg");
+    var res = await fetchBodyT(ENG_POLLG + encodeURIComponent(prompt) + "?model=openai&private=true", {},
+                               Math.max(2000, Math.min(T_POLLG, deadline - Date.now())), false, chainSignal);
+    if (!res.r.ok) throw new Error("pollg");
+    var t = ((res.data) || "").trim();
+    if (!t || t.charAt(0) === "{") throw new Error("pollg"); // error JSON
+    return t;
+  })();
+}
+/* Engine 4: AI Horde — anonymous crowd GPU, async queue. Slow but stubborn. */
+function engHorde(msgs, temp, deadline, pulse, chainSignal){
+  var sys = RABINA_SYS;
+  var h = hist[mode].slice(-8);
+  var parts = ["System: " + sys];
+  for (var i = 0; i < h.length; i++)
+    parts.push((h[i].role === "user" ? "User" : "Assistant") + ": " + h[i].content.slice(0, 350));
+  parts.push("Assistant:");
+  var prompt = parts.join("\n").slice(0, 1500);
+  return (async function(){
+    if (Date.now() >= deadline) throw new Error("horde");
+    if (pulse) pulse("রিকোয়েস্ট পাঠাচ্ছে");
+    var subRes = await fetchBodyT(ENG_HORDE + "/generate/text/async", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": "0000000000", "Client-Agent": "rabina-ai:1.0" },
+      body: JSON.stringify({
+        prompt: prompt,
+        params: { n: 1, max_length: 450, max_context_length: 1536, temperature: temp, singleline: false },
+        models: HORDE_MODELS
+      })
+    }, Math.max(2000, Math.min(T_HORDE_SUBMIT, deadline - Date.now())), true, chainSignal);
+    if (!subRes.r.ok) throw new Error("horde");
+    var sj = subRes.data;
+    var id = sj && sj.id;
+    if (!id) throw new Error("horde");
+    var start = Date.now(), tick = 0;
+    while (Date.now() < deadline && Date.now() - start < 45000){
+      await new Promise(function(res){ setTimeout(res, 3000); });
+      tick++;
+      if (pulse) pulse("অপেক্ষা " + bnNum(tick * 3) + "s");
+      if (Date.now() >= deadline) break;
+      var st;
+      try{
+        var sr = await fetchBodyT(ENG_HORDE + "/generate/text/status/" + id,
+                                  { headers: { "apikey": "0000000000" } },
+                                  Math.max(2000, Math.min(T_HORDE_STATUS, deadline - Date.now())), true, chainSignal);
+        if (!sr.r.ok) continue;
+        st = sr.data;
+      } catch(e){ continue; }               // slow poll — abort this poll, retry until deadline
+      if (st.faulted || st.is_possible === false) throw new Error("horde");
+      if (st.done){
+        var g = (st.generations || [])[0] || {};
+        var t = ((g.text) || "").trim();
+        if (!t) throw new Error("horde");
+        return t;
+      }
+    }
+    throw new Error("horde");
+  })();
+}
+/* Engine 0: SAGOR DeepAI — Sagor's own API, primary engine.
+   Takes a single prompt, so we pack persona + recent history into it. */
+function engDeepAI(msgs, temp, deadline, pulse, chainSignal){
+  return (async function(){
+    if (Date.now() >= deadline) throw new Error("deepai");
+    if (pulse) pulse("প্রধান সার্ভার");
+    var parts = [RABINA_SYS];
+    var h = hist.ai.slice(-6);
+    for (var i = 0; i < h.length; i++)
+      parts.push((h[i].role === "user" ? "ব্যবহারকারী" : "রাবিনা") + ": " + h[i].content.slice(0, 500));
+    var fn = pendingFileNote; pendingFileNote = null;
+    if (fn) parts.push("সিস্টেম নোট: ব্যবহারকারী '" + fn + "' নামের ফাইলটা পাঠিয়েছে। তুমি ফাইলটা খুলতে পারছ না — এ নিয়ে বড় ব্যাখ্যা দিও না, এক-দুই লাইনে স্বাভাবিকভাবে সাড়া দাও।");
+    parts.push("মনে রেখো: ঢাকাইয়া কথ্য বাংলায় 'তুমি' সম্বোধনে মিষ্টি ও আন্তরিক টোনে উত্তর দাও।");
+    parts.push("রাবিনা:");
+    var prompt = parts.join("\n").slice(0, 3000);
+    var res = await fetchBodyT(ENG_DEEPAI + encodeURIComponent(prompt), {},
+                               Math.max(2000, Math.min(25000, deadline - Date.now())), true, chainSignal);
+    if (!res.r.ok) throw new Error("deepai");
+    var j = res.data;
+    if (!j || j.status !== "success") throw new Error("deepai");
+    var txt = (j.reply || "").trim();
+    if (txt.charAt(0) === '"' && txt.charAt(txt.length - 1) === '"'){
+      try{ txt = JSON.parse(txt); }catch(e){ txt = txt.slice(1, -1); }
+    }
+    txt = (txt || "").trim();
+    if (!txt) throw new Error("deepai");
+    return txt;
+  })();
+}
+var ENGINES = [
+  { id: "deepai", bn: "DeepAI", run: function(msgs, temp, deadline, pulse, cs){ return engDeepAI(msgs, temp, deadline, pulse, cs); } }
+];
+
+/* Bengali numerals for status labels */
+function bnNum(n){
+  var m = { "0": "০", "1": "১", "2": "২", "3": "৩", "4": "৪", "5": "৫", "6": "৬", "7": "৭", "8": "৮", "9": "৯" };
+  return String(n).replace(/[0-9]/g, function(d){ return m[d]; });
+}
+
+/* orchestrator: walk the engine chain until one answers — within GLOBAL_BUDGET.
+   onStatus(txt) keeps the live status line next to the typing dots updated:
+   "⚡ সার্ভার ১ চেষ্টা করছে… (OVH)" → "🔄 ব্যাকআপ ২ চেষ্টা করছে… (Pollinations)" … */
+async function askAI(onStatus){
+  var msgs = buildMessages();
+  var temp = 0.7;
+  var deadline = Date.now() + GLOBAL_BUDGET_MS;
+  // shared budget abort: cancels the active request the instant the 85s
+  // budget expires (even mid-body), so nothing can outlive the budget
+  var chainCtrl = window.AbortController ? new AbortController() : null;
+  var chainSignal = chainCtrl ? chainCtrl.signal : null;
+  var budgetTo = setTimeout(function(){ if (chainCtrl) chainCtrl.abort(); }, GLOBAL_BUDGET_MS);
+  var now = Date.now();
+  var pool = ENGINES.filter(function(e){ return !(downUntil[e.id] > now); });
+  if (!pool.length) pool = ENGINES.slice();  // everything cooled — try all anyway
+  var tried = 0, failedOver = false;
+  try{
+    for (var i = 0; i < pool.length; i++){
+      if (Date.now() >= deadline) break;     // budget used up — stop here
+      var e = pool[i];
+      var label = (i === 0 ? "⚡ প্রধান সার্ভার" : "🔄 ব্যাকআপ " + bnNum(i + 1)) +
+                  " চেষ্টা করছে… (" + e.bn + ")";
+      if (onStatus) onStatus(label);
+      try {
+        var reply = await e.run(msgs, temp, deadline, function(extra){
+          if (onStatus) onStatus(label + " · " + extra);
+        }, chainSignal);
+        downUntil[e.id] = 0;                 // healthy again
+        if (failedOver) toast("✅ ব্যাকআপ সার্ভার (" + e.bn + ") থেকে রিপ্লাই এসেছে");
+        return reply;
+      } catch(err){
+        downUntil[e.id] = Date.now() + COOLDOWN_MS;
+        tried++;
+        failedOver = true;
+      }
+    }
+  } finally{
+    clearTimeout(budgetTo);
+  }
+  var err = new Error("all-down");
+  err.attempts = tried || ENGINES.length;
+  throw err;
+}
+
+/* ---------------- message DOM ---------------- */
+var MSG_SVG = {
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  speak: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9.5 9.5 0 0 1 0 13"/></svg>'
+};
+function avatarHTML(){ return svgRabina(34); }
+function hideEmpty(){
+  els.emptyAi.classList.remove("show");
+}
+function renderEmptyIfNeeded(){
+  if (!hist[mode].length){ els.emptyAi.classList.add("show"); }
+}
+function userRow(text, fileData){
+  var row = document.createElement("div");
+  row.className = "row user";
+  var b = document.createElement("div");
+  b.className = "bubble";
+  if (fileData){
+    if (fileData.isImage){
+      var im = document.createElement("img");
+      im.className = "attached"; im.src = fileData.dataUrl; im.alt = "পাঠানো ছবি";
+      b.appendChild(im);
+    } else if (fileData.dataUrl){
+      var a = document.createElement("a");
+      a.className = "filechip"; a.href = fileData.dataUrl; a.download = fileData.name;
+      a.innerHTML = '<span class="fic">📄</span><span class="fnm">' + esc(fileData.name) +
+        "<small>" + fmtSize(fileData.size) + " · ডাউনলোড</small></span>";
+      b.appendChild(a);
+    } else {
+      var s = document.createElement("span");
+      s.className = "filechip off";
+      s.innerHTML = '<span class="fic">' + (fileData.isImage ? "🖼️" : "📄") + '</span><span class="fnm">' + esc(fileData.name) +
+        "<small>" + fmtSize(fileData.size) + "</small></span>";
+      b.appendChild(s);
+    }
+  }
+  if (text){
+    var sp = document.createElement("span");
+    sp.textContent = text;
+    b.appendChild(sp);
+  }
+  row.appendChild(b);
+  els.msgs.appendChild(row);
+  scrollBottom();
+}
+function aiRowSkeleton(){
+  var row = document.createElement("div");
+  row.className = "row ai";
+  row.innerHTML = '<div class="avatar">' + avatarHTML() + '</div>' +
+    '<div class="wrap"><div class="bubble tt-bubble"><span class="typing"><i></i><i></i><i></i></span></div></div>';
+  els.msgs.appendChild(row);
+  scrollBottom();
+  return row;
+}
+function aiRowFinal(row, rawText){
+  var wrap = row.querySelector(".wrap");
+  var acts = document.createElement("div");
+  acts.className = "macts";
+  acts.innerHTML = '<button class="mact act-copy" type="button">' + MSG_SVG.copy + ' কপি</button>' +
+                   '<button class="mact act-speak" type="button">' + MSG_SVG.speak + ' শুনো</button>';
+  wrap.appendChild(acts);
+  row.dataset.raw = rawText || "";
+}
+function aiRowError(row, attempts, retriedFn){
+  var bubble = row.querySelector(".bubble");
+  bubble.classList.remove("tt-bubble");
+  bubble.classList.add("err-bubble");
+  bubble.textContent = "😔 DeepAI সার্ভার এখন busy/down। একটু পরে আবার চেষ্টা করো।";
+  var wrap = row.querySelector(".wrap");
+  var acts = document.createElement("div");
+  acts.className = "macts";
+  acts.innerHTML = '<button class="mact retry" type="button">🔄 আবার চেষ্টা করো</button>';
+  acts.querySelector(".retry").addEventListener("click", function(){
+    row.remove();
+    retriedFn && retriedFn();
+  });
+  wrap.appendChild(acts);
+}
+
+/* typewriter */
+var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function typewrite(bubble, text, done){
+  if (REDUCED){ bubble.innerHTML = md(text); scrollBottom(); done && done(); return; }
+  var i = 0, step = Math.max(4, Math.round(text.length / 90));
+  bubble.textContent = "";
+  var iv = setInterval(function(){
+    i += step;
+    if (i >= text.length){ clearInterval(iv); bubble.innerHTML = md(text); scrollBottom(); done && done(); return; }
+    bubble.textContent = text.slice(0, i);
+    if (i % (step * 8) === 0) scrollBottom();
+  }, 24);
+}
+
+/* ---------------- send flow ---------------- */
+var pendingFile = null; // {name,size,dataUrl,isImage}
+var pendingFileNote = null; // filename for the AI prompt
+async function send(text){
+  text = (text || "").trim();
+  if ((!text && !pendingFile) || busy) return;
+  busy = true; syncSend();
+  hideEmpty();
+  var fileToSend = pendingFile;
+  pendingFile = null;
+  els.imgPreview.hidden = true;
+  pendingFileNote = fileToSend ? fileToSend.name : null;
+  hist[mode].push({ role: "user", content: text || "(ফাইল পাঠানো হয়েছে)" });
+  userRow(text, fileToSend);
+  histSaveUser(text, fileToSend);
+  els.input.value = ""; autogrow(); syncSend();
+  var row = aiRowSkeleton(), curMode = mode;
+  var st = row.querySelector(".tt-status");
+  function upd(txt){ if (st) st.textContent = txt; }
+  try{
+    var reply = await askAI(upd);
+    hist[curMode].push({ role: "assistant", content: reply });
+    histSaveAI(reply);
+    if (curMode !== mode){ busy = false; syncSend(); return; } // user switched tab; keep history
+    var b = row.querySelector(".bubble");
+    b.classList.remove("tt-bubble");
+    typewrite(b, reply, function(){ aiRowFinal(row, reply); });
+  } catch(e){
+    if (curMode !== mode){ busy = false; syncSend(); return; }
+    // keep the user message in history so retry re-asks it
+    aiRowError(row, e.attempts, function(){ retryLast(); });
+  }
+  busy = false; syncSend();
+}
+function retryLast(){
+  if (busy) return;
+  // remove the failed attempt state and re-ask with same history
+  var row = aiRowSkeleton(), curMode = mode;
+  var st = row.querySelector(".tt-status");
+  busy = true; syncSend();
+  askAI(function(txt){ if (st) st.textContent = txt; }).then(function(reply){
+    hist[curMode].push({ role: "assistant", content: reply });
+    histSaveAI(reply);
+    if (curMode !== mode){ busy = false; syncSend(); return; }
+    var b = row.querySelector(".bubble");
+    b.classList.remove("tt-bubble");
+    typewrite(b, reply, function(){ aiRowFinal(row, reply); });
+  }).catch(function(err){
+    aiRowError(row, err.attempts, function(){ retryLast(); });
+  }).finally(function(){ busy = false; syncSend(); });
+}
+
+/* message action delegation */
+els.msgs.addEventListener("click", function(ev){
+  var cp = ev.target.closest(".cb-copy");
+  if (cp){
+    var code = cp.closest(".codeblock").querySelector("code").textContent;
+    copyText(code, "কোড কপি হয়েছে ✅");
+    return;
+  }
+  var c = ev.target.closest(".act-copy");
+  if (c){ copyText(c.closest(".row").dataset.raw || "", "কপি হয়েছে ✅"); return; }
+  var s = ev.target.closest(".act-speak");
+  if (s){ speak(s.closest(".row").dataset.raw || ""); return; }
+});
+function copyText(t, ok){
+  function done(){ toast(ok || "কপি হয়েছে ✅"); }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(done, function(){ fallbackCopy(); });
+  } else fallbackCopy();
+  function fallbackCopy(){
+    var ta = document.createElement("textarea");
+    ta.value = t; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){ toast("কপি করা গেল না"); }
+    ta.remove();
+  }
+}
+
+/* ---------------- voice ---------------- */
+function warmVoices(){ if (window.speechSynthesis) window.speechSynthesis.getVoices(); }
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = warmVoices;
+warmVoices();
+function speak(text){
+  var sp = window.speechSynthesis;
+  if (!sp){ toast("এই ডিভাইসে ভয়েস আউটপুট নেই"); return; }
+  if (sp.speaking || sp.pending){ sp.cancel(); return; }
+  var clean = (text || "").replace(/```[\s\S]*?```/g, " ").replace(/[#>*_`]/g, "").slice(0, 600);
+  var u = new SpeechSynthesisUtterance(clean);
+  var vs = sp.getVoices();
+  function isBn(v){ return v.lang && v.lang.toLowerCase().indexOf("bn") === 0; }
+  function isFem(v){ return /female|woman|girl|zira|samantha|veena|lekha|মহিলা|নারী|মেয়ে/.test((v.name || "").toLowerCase()); }
+  var v = vs.find(function(x){ return isBn(x) && isFem(x); }) ||
+          vs.find(function(x){ return isBn(x); }) ||
+          vs.find(function(x){ return /bengali|bangla/i.test(x.name); }) ||
+          vs.find(function(x){ return isFem(x); });
+  if (v){ u.voice = v; u.lang = v.lang; } else u.lang = "bn-BD";
+  u.rate = 1;
+  u.pitch = 1.15;
+  sp.speak(u);
+  toast("🔊 শুনছো…");
+}
+var recognizer = null, recOn = false;
+els.mic.addEventListener("click", function(){
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR){ toast("এই ব্রাউজারে ভয়েস ইনপুট সাপোর্ট করে না"); return; }
+  if (recOn){ try{ recognizer.stop(); }catch(e){} return; }
+  recognizer = new SR();
+  recognizer.lang = "bn-BD";
+  recognizer.interimResults = true;
+  recognizer.onresult = function(e){
+    var t = "";
+    for (var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
+    els.input.value = t; autogrow(); syncSend();
+  };
+  recognizer.onend = function(){ recOn = false; els.mic.classList.remove("on"); };
+  recognizer.onerror = function(){ recOn = false; els.mic.classList.remove("on"); toast("ভয়েস চিনতে পারলাম না"); };
+  try{ recognizer.start(); recOn = true; els.mic.classList.add("on"); toast("🎙 শুনছে… বলো!"); }
+  catch(e){ toast("মাইক্রোফোন চালু করা গেল না"); }
+});
+
+/* ---------------- file attach ---------------- */
+function fmtSize(b){
+  if (b < 1024) return b + " B";
+  if (b < 1048576) return (b / 1024).toFixed(1) + " KB";
+  return (b / 1048576).toFixed(1) + " MB";
+}
+els.attach = document.getElementById("attachBtn");
+els.fileInput = document.getElementById("fileInput");
+els.imgPreview = document.getElementById("imgPreview");
+els.imgPreviewImg = document.getElementById("imgPreviewImg");
+els.filePreviewName = document.getElementById("filePreviewName");
+els.attach.addEventListener("click", function(){ els.fileInput.click(); });
+els.fileInput.addEventListener("change", function(){
+  var f = els.fileInput.files && els.fileInput.files[0];
+  if (!f) return;
+  if (f.size > 10 * 1024 * 1024){ toast("ফাইল ১০MB-এর কম হতে হবে"); els.fileInput.value = ""; return; }
+  var rd = new FileReader();
+  rd.onload = function(){
+    pendingFile = { name: f.name, size: f.size, dataUrl: rd.result, isImage: f.type.indexOf("image/") === 0 };
+    if (pendingFile.isImage){
+      els.imgPreviewImg.src = pendingFile.dataUrl; els.imgPreviewImg.hidden = false;
+      els.filePreviewName.hidden = true;
+    } else {
+      els.imgPreviewImg.hidden = true;
+      els.filePreviewName.textContent = "📄 " + pendingFile.name + " (" + fmtSize(pendingFile.size) + ")";
+      els.filePreviewName.hidden = false;
+    }
+    els.imgPreview.hidden = false;
+    syncSend();
+  };
+  rd.readAsDataURL(f);
+  els.fileInput.value = "";
+});
+document.getElementById("imgPreviewX").addEventListener("click", function(){
+  pendingFile = null; els.imgPreview.hidden = true; syncSend();
+});
+
+/* ---------------- local chat history (sidebar) ---------------- */
+var LS_KEY = "rabina_chats_v1";
+var chats = [];
+var activeChatId = null;
+function loadChats(){ try{ chats = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); if(!Array.isArray(chats)) chats = []; }catch(e){ chats = []; } }
+var saveWarned = false;
+function saveChats(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(chats)); }
+  catch(e){ if(!saveWarned){ saveWarned = true; toast("⚠️ হিস্ট্রি সেভ করা যাচ্ছে না — ব্রাউজার স্টোরেজ বন্ধ আছে"); } }
+}
+function storageOK(){
+  try{ localStorage.setItem("__rabina_t", "1"); localStorage.removeItem("__rabina_t"); return true; }
+  catch(e){ return false; }
+}
+function activeChat(){ return chats.find(function(c){ return c.id === activeChatId; }); }
+function fileMeta(f){
+  if(!f) return null;
+  return { name:f.name, size:f.size, isImage:f.isImage, dataUrl:(f.size < 400*1024 ? f.dataUrl : null) };
+}
+function ensureChat(){
+  var c = activeChat();
+  if(!c){ c = { id:"c"+Date.now(), title:"নতুন চ্যাট", ts:Date.now(), msgs:[] }; chats.unshift(c); activeChatId = c.id; saveChats(); }
+  return c;
+}
+function touchChat(){ var c = activeChat(); if(c){ c.ts = Date.now(); saveChats(); renderChatList(); } }
+function histSaveUser(text, f){
+  var c = ensureChat();
+  c.msgs.push({ role:"user", text:text || "", file:fileMeta(f) });
+  if(c.msgs.filter(function(m){ return m.role === "user"; }).length === 1)
+    c.title = text ? text.slice(0, 34) : ("📎 " + (f ? f.name : "ফাইল"));
+  touchChat();
+}
+function histSaveAI(raw){
+  var c = ensureChat();
+  c.msgs.push({ role:"ai", text:raw });
+  touchChat();
+}
+function bnDate(ts){
+  var d = new Date(ts), now = new Date();
+  function day(x){ return x.getFullYear() + "-" + x.getMonth() + "-" + x.getDate(); }
+  if(day(d) === day(now)) return "আজ";
+  if(day(d) === day(new Date(now.getTime() - 864e5))) return "গতকাল";
+  return d.toLocaleDateString("bn-BD", { day:"numeric", month:"short" });
+}
+function renderChatList(){
+  var list = document.getElementById("chatList");
+  list.innerHTML = "";
+  if(!chats.length){
+    var e = document.createElement("div"); e.className = "sideempty"; e.textContent = "এখনো কোনো চ্যাট নেই";
+    list.appendChild(e); return;
+  }
+  chats.forEach(function(c){
+    var it = document.createElement("div");
+    it.className = "chatitem" + (c.id === activeChatId ? " active" : "");
+    var tm = document.createElement("span"); tm.className = "t"; tm.textContent = c.title || "নতুন চ্যাট";
+    var dt = document.createElement("span"); dt.className = "d"; dt.textContent = bnDate(c.ts);
+    var del = document.createElement("button"); del.className = "cdel"; del.textContent = "✕"; del.title = "ডিলিট";
+    del.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      if(busy){ toast("রাবিনা লিখছে, একটু দাঁড়াও"); return; }
+      chats = chats.filter(function(x){ return x.id !== c.id; });
+      if(c.id === activeChatId){ activeChatId = null; startNewChat(true); }
+      saveChats(); renderChatList();
+      toast("চ্যাট মুছে ফেলা হয়েছে");
+    });
+    it.appendChild(tm); it.appendChild(dt); it.appendChild(del);
+    it.addEventListener("click", function(){ openChat(c.id); });
+    list.appendChild(it);
+  });
+}
+function renderMsgsIntoDOM(c){
+  els.msgs.innerHTML = "";
+  c.msgs.forEach(function(m){
+    if(m.role === "user") userRow(m.text, m.file);
+    else aiRow(md(m.text), m.text);
+  });
+  scrollBottom();
+}
+function openChat(id){
+  if(busy){ toast("রাবিনা লিখছে, একটু দাঁড়াও"); return; }
+  var c = chats.find(function(x){ return x.id === id; }); if(!c) return;
+  activeChatId = id; hist.ai = [];
+  c.msgs.forEach(function(m){
+    hist.ai.push({ role: m.role === "user" ? "user" : "assistant",
+      content: m.text || (m.file ? ("[ফাইল: " + m.file.name + "]") : "") });
+  });
+  hist.ai = hist.ai.slice(-12);
+  if(c.msgs.length){ hideEmpty(); renderMsgsIntoDOM(c); } else showEmpty();
+  renderChatList(); closeSidebar(); syncSend();
+}
+function startNewChat(silent){
+  if(busy && !silent){ toast("রাবিনা লিখছে, একটু দাঁড়াও"); return; }
+  busy = false;
+  activeChatId = "c" + Date.now();
+  chats.unshift({ id:activeChatId, title:"নতুন চ্যাট", ts:Date.now(), msgs:[] });
+  saveChats(); renderChatList();
+  els.msgs.innerHTML = ""; hist.ai = []; showEmpty(); syncSend();
+  if(!silent) toast("✨ নতুন চ্যাট শুরু!");
+  closeSidebar();
+}
+function openSidebar(){ document.getElementById("sidebar").classList.add("open"); document.getElementById("sideBack").hidden = false; }
+function closeSidebar(){ document.getElementById("sidebar").classList.remove("open"); document.getElementById("sideBack").hidden = true; }
+document.getElementById("menuBtn").addEventListener("click", openSidebar);
+document.getElementById("sideClose").addEventListener("click", closeSidebar);
+document.getElementById("sideBack").addEventListener("click", closeSidebar);
+document.getElementById("sideNewChatBtn").addEventListener("click", function(){ startNewChat(false); });
+
+/* ---------------- empty state ---------------- */
+function resetChat(){
+  els.msgs.innerHTML = "";
+  els.emptyAi.classList.remove("show");
+  rebuild();
+  renderEmptyIfNeeded();
+  els.input.placeholder = PLACE[mode];
+}
+document.getElementById("newChatBtn").addEventListener("click", function(){ startNewChat(false); });
+document.querySelectorAll("[data-chip]").forEach(function(ch){
+  ch.addEventListener("click", function(){ send(ch.textContent); });
+});
+
+/* ---------------- composer ---------------- */
+function autogrow(){
+  els.input.style.height = "auto";
+  els.input.style.height = Math.min(els.input.scrollHeight, 130) + "px";
+}
+function syncSend(){ els.send.disabled = busy || (!els.input.value.trim() && !pendingFile); }
+els.input.addEventListener("input", function(){ autogrow(); syncSend(); });
+els.input.addEventListener("keydown", function(e){
+  if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); send(els.input.value); }
+});
+els.send.addEventListener("click", function(){ send(els.input.value); });
+
+/* ---------------- PWA install ---------------- */
+var deferredPrompt = null;
+var isStandalone = window.matchMedia("(display-mode: standalone)").matches ||
+                   window.navigator.standalone === true;
+var installBtn = document.getElementById("installBtn");
+if (!isStandalone) installBtn.hidden = false;
+window.addEventListener("beforeinstallprompt", function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.hidden = false;
+});
+installBtn.addEventListener("click", async function(){
+  if (deferredPrompt){
+    deferredPrompt.prompt();
+    try{ await deferredPrompt.userChoice; }catch(e){}
+    deferredPrompt = null;
+    return;
+  }
+  // manual guide
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var steps = ios
+    ? ['ব্রাউজারের <b>Share ⬆️</b> বাটনে চাপো',
+       '<b>"Add to Home Screen"</b> সিলেক্ট করো',
+       '<b>Add</b> চাপো — হোম স্ক্রিনে রাবিনা AI আইকন চলে আসবে ✅']
+    : ['ব্রাউজারের <b>⋮ মেনু</b> খোলো',
+       '<b>"Add to Home screen"</b> / <b>"Install app"</b> বেছে নাও',
+       'Confirm করো — অ্যাপের মতো ফুলস্ক্রিনে খুলবে ✅'];
+  document.getElementById("igSteps").innerHTML =
+    steps.map(function(s, i){ return '<li data-n="' + (i + 1) + '">' + s + '</li>'; }).join("");
+  document.getElementById("installGuide").hidden = false;
+});
+document.getElementById("igClose").addEventListener("click", function(){
+  document.getElementById("installGuide").hidden = true;
+});
+window.addEventListener("appinstalled", function(){ installBtn.hidden = true; toast("🎉 রাবিনা AI ইন্সটল হয়েছে!"); });
+
+/* ---------------- themes ---------------- */
+var THEMES = [
+  {id:"auto", name:"অটো ⚙️", c:["#f472b6","#a78bfa"], bg:"#130710"},
+  {id:"rose", name:"গোলাপি 🌸", c:["#f472b6","#db2777"], bg:"#130710"},
+  {id:"ocean", name:"সমুদ্র 🌊", c:["#38bdf8","#0284c7"], bg:"#04141f"},
+  {id:"violet", name:"বেগুনি 💜", c:["#a78bfa","#7c3aed"], bg:"#120a1e"},
+  {id:"mint", name:"পুদিনা 🌿", c:["#34d399","#059669"], bg:"#06120e"},
+  {id:"light", name:"হালকা ☀️", c:["#f9a8d4","#fbcfe8"], bg:"#fdf6f9"}
+];
+function themeById(id){ return THEMES.find(function(x){ return x.id === id; }) || THEMES[0]; }
+function applyTheme(id, silent){
+  var th = themeById(id);
+  document.documentElement.setAttribute("data-theme", th.id);
+  try{ localStorage.setItem("rabina_theme", th.id); }catch(e){}
+  var mc = document.querySelector('meta[name="theme-color"]');
+  if(mc) mc.setAttribute("content", th.bg);
+  document.querySelectorAll(".themecard").forEach(function(el){
+    el.classList.toggle("active", el.getAttribute("data-th") === th.id);
+  });
+  if(!silent) toast("🎨 থিম: " + th.name);
+}
+function buildThemeGrid(){
+  var g = document.getElementById("themeGrid"); g.innerHTML = "";
+  var cur = document.documentElement.getAttribute("data-theme") || "auto";
+  THEMES.forEach(function(th){
+    var d = document.createElement("div");
+    d.className = "themecard" + (th.id === cur ? " active" : "");
+    d.setAttribute("data-th", th.id);
+    d.innerHTML = '<div class="swatch" style="background:linear-gradient(135deg,' + th.c[0] + ',' + th.c[1] + ')"></div><div class="tnm">' + th.name + '</div>';
+    d.addEventListener("click", function(){ applyTheme(th.id); });
+    g.appendChild(d);
+  });
+}
+function openThemeSheet(){ buildThemeGrid(); document.getElementById("themeSheet").hidden = false; document.getElementById("themeBack").hidden = false; }
+function closeThemeSheet(){ document.getElementById("themeSheet").hidden = true; document.getElementById("themeBack").hidden = true; }
+document.getElementById("themeBtn").addEventListener("click", openThemeSheet);
+document.getElementById("themeClose").addEventListener("click", closeThemeSheet);
+document.getElementById("themeBack").addEventListener("click", closeThemeSheet);
+
+/* ---------------- misc ---------------- */
+loadChats(); renderChatList();
+if(!storageOK()) toast("⚠️ এই ব্রাউজারে চ্যাট সেভ হবে না — স্টোরেজ বন্ধ আছে");
+applyTheme(document.documentElement.getAttribute("data-theme") || "auto", true);
+window.addEventListener("offline", function(){ toast("📡 ইন্টারনেট নেই — চ্যাট করতে নেট লাগবে"); });
+autogrow(); syncSend(); els.input.placeholder = PLACE[mode];
+})();
+</script>
+</body>
+</html>
